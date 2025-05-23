@@ -1,0 +1,147 @@
+/* .Food-desplay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Food-desplay .QategoryName {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 30px;
+}
+
+.Food-desplay-list {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.Food-desplay-list .Cart {
+    width: 500px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #00000015;
+    flex-shrink: 0;
+}
+
+.Food-desplay-list .Cart img:first-of-type {
+    display: flex;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.Food_item_info {
+    display: grid;       
+    grid-template-rows: auto auto; 
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    gap: 0;
+}
+
+.Food_item_img_raiting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+    padding: 0;
+}
+
+.Food_item_img_raiting p {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+ .Food_item_desc {
+    
+    color: #676767;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+} 
+
+.Food_item_price {
+    color: rgb(0, 0, 0);
+    display: flex;
+     justify-content: center;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+.Price_and_button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+}
+
+.Food_item_button {
+    padding: 6px;
+    border: none;
+    width: 100%;
+    background-color: green;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 3px;
+    margin: 0;
+}
+
+.Inc_or_dec_amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background-color: azure;
+    border-radius: 15px;
+    margin: 0;
+    padding: 5px;
+}
+
+@media (max-width: 576px) {
+    .Food-desplay-list {
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 10px;
+    }
+
+    .Food-desplay-list .Cart {
+        width: 200px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0px 0px 10px #00000015;
+    }
+
+    .Food_item_info {
+        display: grid;
+        padding: 5px;
+        margin: 0;
+        width: 100%;
+        gap: 0;
+    }
+
+    .Food_item_img_raiting p {
+        width: 100%;
+        font-size: 17px;
+        letter-spacing: -0.5px;
+        max-width: 90%;
+        text-align: center;
+        margin: 0;
+    }
+} */

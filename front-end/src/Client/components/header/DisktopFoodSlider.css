@@ -1,0 +1,297 @@
+/* Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Chicle&family=Merienda:wght@300..900&display=swap');
+.food-slider-container {
+  max-width: 1500px;
+  margin: 80px auto 2rem;
+  padding: 0 20px;
+
+}
+.slider-wrapper {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background: url('headerimg.png') no-repeat center center/cover;
+}
+
+
+/* Slider & Slide */
+.slider {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide {
+  flex: 0 0 100%;
+  position: relative;
+  min-height: 600px;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.slide .slide-info {
+  position: absolute;
+  left: 10%; 
+  bottom: 20%;
+  z-index: 100;
+  padding: 5rem; 
+  width: 50%;
+}
+/* Slide Content */
+.slide-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 43%;
+  right: 10%; 
+  transform: translateY(-50%);
+  width: 440px;
+  height: 440px;
+  border-radius:10% ;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  color: white;
+  background-color: #ff8300;
+}
+.slide-content .slide-image{
+  width: 100%;
+  height: 100%;
+  border-radius:10% ;
+  
+
+
+}
+.category-badge {
+  display: inline-block;
+  background: #ff9f43;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.slide-title {
+  font-family: "Chicle", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 3.9rem;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+  color: white;
+  text-shadow: 5PX 5PX 5PX black;
+}
+
+.slide-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 80%;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.slide-price {
+  font-size: 2rem;
+  font-weight:bolder;
+  color:tomato;
+  text-shadow: 5PX 5PX 5PX black;
+  font-family: "Chicle", sans-serif;
+  font-style: normal;
+}
+
+.order-button {
+  background: #ff9f43;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 400px;
+}
+
+.order-button:hover {
+  background: #ff8300;
+  transform: translateY(-2px);
+}
+
+/* Controls */
+.control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  z-index: 3;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.control:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* Progress Bar */
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 2;
+}
+
+.progress {
+  height: 100%;
+  background: #ff9f43;
+  transition: width 0.5s linear;
+}
+
+/* Thumbnails */
+.thumbnails {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 2;
+}
+
+.thumbnail {
+  width: 90px;
+  height: 70px;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.thumbnail.active {
+  transform: scale(1.2);
+  border-color: #ff9f43;
+  box-shadow: 0 0 15px rgba(255, 159, 67, 0.5);
+}
+
+/* Empty State */
+.no-slides-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #666;
+  font-size: 1.2rem;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .slide-content {
+    max-width: 400px;
+    left: 5%;
+  }
+  
+  .slide-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .slide {
+    min-height: 500px;
+  }
+  
+  .slide-content {
+    max-width: 90%;
+    padding: 1.5rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .slide-title {
+    font-size: 1.8rem;
+  }
+  
+  .slide-description {
+    max-width: 100%;
+    font-size: 1rem;
+  }
+  
+  .thumbnails {
+    bottom: 10px;
+  }
+  
+  .thumbnail {
+    width: 70px;
+    height: 50px;
+  }
+  
+  .control {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide-content {
+    padding: 1rem;
+  }
+  
+  .slide-title {
+    font-size: 1.5rem;
+  }
+  
+  .slide-price {
+    font-size: 1.5rem;
+  }
+  
+  .order-button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+}
