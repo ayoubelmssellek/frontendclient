@@ -1,91 +1,120 @@
-import  { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './DisktopFoodSlider.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addTo_Cart } from '../../actions/action';
 import { useNavigate } from 'react-router-dom';
-import { food_list } from '../../../Admin/assets/assets';
+import { fetchingProducts } from '../../../Api/fetchingData/FetchProducts';
+import { useQuery } from '@tanstack/react-query';
+import Loading from '../../../Helper/Loading/Loading';
 
 const DesktopFoodSlider = () => {
+   const { 
+    data: food_list = [], 
+    isLoading: productsLoading, 
+    error: productsError 
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchingProducts,
+  });
+  console.log('food_list', food_list);
+  
+  
+
   const [activeIndex, setActiveIndex] = useState(0);
   const timeoutRef = useRef(null);
-  const disbatch=useDispatch()
-  const navigate=useNavigate()
-    // const food_list = useSelector((state) => state.admin.produits);
-        
-  const slides = food_list
-    // .flatMap(order => order.items)
-    .slice(0, 8)
-    .map(item => ({
-      _id:item._id,
-      image: item.image,
-      name: item.name,
-      category: item.category,
-      description: item.description,
-      price: item.price
-    }));
-    
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const slides = (() => {
+    const filteredList = food_list?.filter(i => {
+      const category = i.category.name?.toLowerCase();
+      return category !== 'extra' && category !== 'jus';
+    });
+   
+    const discounted = filteredList.filter(i => i.discount !== 0);
 
+    return discounted.length > 0 ? discounted : filteredList;
+  })();
+  
+  // const slides = filtredlist?.slice(0, 8).map(item => ({
+  //   _id: item._id,
+  //   image: `http://localhost:8000/storage/${item.image_path}`,
+  //   name: item.name,
+  //   category: item.category_name,
+  //   price: item.price
+  // }));
+  //  console.log(slides);
+   
   const resetTimeout = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
   useEffect(() => {
-    if(slides.length === 0) return;
+    if (slides?.length === 0) return;
     
     resetTimeout();
     timeoutRef.current = setTimeout(() => {
-      setActiveIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
+      setActiveIndex(prev => (prev === slides?.length - 1 ? 0 : prev + 1));
     }, 5000);
 
     return resetTimeout;
-  }, [activeIndex, slides.length]);
+  }, [activeIndex, slides?.length]);
 
   const handlePrev = () => {
-    if(slides.length === 0) return;
-    setActiveIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
+    if (slides?.length === 0) return;
+    setActiveIndex(prev => (prev === 0 ? slides?.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    if(slides.length === 0) return;
-    setActiveIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
+    if (slides?.length === 0) return;
+    setActiveIndex(prev => (prev === slides?.length - 1 ? 0 : prev + 1));
   };
-  const add_and_go_ToCart=(item)=>{
-       disbatch(addTo_Cart(item)) 
-       navigate('/shoupingCart')       
-  }
+
+  const addToCart = (item) => {
+    dispatch(addTo_Cart(item));
+    navigate('/shoupingCart');
+  };
+  if (productsLoading) return <div><Loading/></div>;
+  if (productsError) return <div className="error-message">Error: {productsError.message}</div>;
 
   return (
     <div className="food-slider-container">
-      {slides.length > 0 ? (
+      {slides?.length > 0 ? (
         <div className="slider-wrapper">
           <div 
             className="slider"
             style={{ transform: `translateX(-${activeIndex * 100}%)` }}
           >
-            {slides.map((slide, index) => (
-              <div 
-                className="slide" 
-                key={index}
-              
-              >
-              <div className='slide-info'>
-              <span className="category-badge">{slide.category}</span>
+            {slides?.slice(0, 8).map((slide, index) => (
+              <div className="slide" key={index}>
+                <div className="slide-info">
+                  <span className="category-badge">{slide.category.name}</span>
                   <h2 className="slide-title">{slide.name}</h2>
-                 {/* <p className="slide-description">{slide.description}</p>*/}
                   <div className="price-container">
-                    <span className="slide-price"> <bdi>درهم</bdi> {slide.price} </span>
-                    <button className="order-button" onClick={()=>add_and_go_ToCart(slide )}>اطلب الان</button>
+                    <span className="slide-price">
+                      <bdi>درهم</bdi> {slide.price}
+                    </span>
+                    <button 
+                      className="order-button" 
+                      onClick={() => addToCart(slide)}
+                    >
+                      اطلب الان
+                    </button>
                   </div>
-              </div>
+                </div>
+
                 <div className="slide-content">
-                <img
-                  src={slide.image}
-                  alt={slide.name}
-                  className="slide-image"
-                  loading="lazy"
-                  decoding="async"
-                />
-                
+                  <img
+                    src={`http://localhost:8000/storage/${slide.image_path}`}
+                    alt={slide.name}
+                    className="slide-image"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {slide.discount !==0 && (
+                  <div className="discount-label">
+                    <span>{slide.discount}% تخفيض</span>
+                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -105,7 +134,7 @@ const DesktopFoodSlider = () => {
                 width: `${(activeIndex + 1) * (100 / slides.length)}%`,
                 transition: 'width 5s linear'
               }}
-            ></div>
+            />
           </div>
 
           <div className="thumbnails">
@@ -116,7 +145,7 @@ const DesktopFoodSlider = () => {
                 onClick={() => setActiveIndex(index)}
               >
                 <img 
-                  src={slide.image} 
+                  src={`http://localhost:8000/storage/${slide.image_path}`} 
                   alt={`Thumbnail - ${slide.name}`}
                   className="thumbnail-image"
                 />

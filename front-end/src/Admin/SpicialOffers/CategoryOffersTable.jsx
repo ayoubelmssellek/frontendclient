@@ -14,7 +14,9 @@ const CategoryOffersTable = () => {
 
 
 
-  const categoryOffers = offers.filter(offer => !offer.product_id && offer.offer_category_name);
+  const categoryOffers = offers.filter(offer => offer.type === 'category');
+  console.log('categoryOffers', categoryOffers);
+  
 
 
   const handelDelete = async (IdOffre) => {
@@ -36,7 +38,7 @@ const CategoryOffersTable = () => {
         <tbody>
           {categoryOffers.map(offer => (
             <tr key={offer.id}>
-              <td>{offer.offer_category_name}</td>
+              <td>{offer.target.name}</td>
               <td>{offer.discount ? `${offer.discount}%` : '-'}</td>
               <td>{offer.startDate}</td>
               <td>{offer.endDate}</td>

@@ -7,6 +7,7 @@ import { addTo_Cart, addTo_Favorite, DicreaseQuantity } from '../../actions/acti
 import { FaArrowRight } from 'react-icons/fa';
 import { fetchingProducts } from '../../../Api/fetchingData/FetchProducts';
 import { useQuery } from '@tanstack/react-query';
+import ProductReviews from '../Reviews/ProductReviews';
 
 const ProductPageDiskTopVersion = () => {
   const {data:produits, loading, error} = useQuery({
@@ -20,7 +21,7 @@ const ProductPageDiskTopVersion = () => {
   const {  cartItems, Favorite } = useSelector((state) => state.client);
   
   const product = produits?.find(item => item.id == id);
-   const extraItems=produits?.filter((item)=>item.category_name == 'extra')
+   const extraItems=produits?.filter((item)=>item.category.name == 'extra')
   
   const inCart = cartItems.some(item => item.id == id);
   const isFavorite = Favorite.some(item => item.id == id);
@@ -38,6 +39,7 @@ const ProductPageDiskTopVersion = () => {
   }
 
   return (
+    <>
     <div className={styles.container}>
       <div className={styles.header}>
               <button className={styles.backButton} onClick={() => navigate(-1)}>
@@ -71,7 +73,7 @@ const ProductPageDiskTopVersion = () => {
         </button>
 
         <h1 className={styles.productTitle}>{product.name}</h1>
-        <span className={styles.productCategory}>{product.category_name}</span>
+        <span className={styles.productCategory}>{product.category.name}</span>
         <p className={styles.productDescription}>{product.description}</p>
 
         {/* Extra Items Section */}
@@ -168,6 +170,8 @@ const ProductPageDiskTopVersion = () => {
       </div>
      </div>
     </div>
+    <ProductReviews id={product.id}/>
+    </>
   );
 };
 

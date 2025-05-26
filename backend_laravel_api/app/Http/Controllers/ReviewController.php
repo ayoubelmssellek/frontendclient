@@ -63,4 +63,16 @@ class ReviewController extends Controller
     
         return response()->json(['message' => 'Review status updated successfully'], 200);
     }
+
+    public function Getreviewsbyid($id){
+        $reviews = DB::table('reviews')
+        ->join('users', 'reviews.user_id', '=', 'users.id')
+        ->join('products', 'reviews.product_id', '=', 'products.id')
+        ->select('reviews.*', 'users.name as user_name', 'products.name as product_name', 'products.image_path as product_image')
+        ->where('reviews.product_id', $id)
+        ->get();
+    
+
+        return response()->json($reviews);
+    }
 }

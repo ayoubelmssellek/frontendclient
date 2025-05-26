@@ -32,7 +32,7 @@ const FilterByQatigory = () => {
   const queryClient = useQueryClient();
 
   const filtredList = food_list?.filter(
-    (item) => item.category_name === category
+    (item) => item.category.name === category
   );
 
   const isInCart = (id) => CartItems.some((item) => item.id === id);
@@ -46,30 +46,28 @@ const FilterByQatigory = () => {
     mutationFn: (productId) => fetchingToggleFavorite(productId),
 
     // Optimistic Update
-    onMutate: async (productId) => {
-      await queryClient.cancelQueries({ queryKey: ["favorites"] });
-
-      const previousFavorites = queryClient.getQueryData(["favorites"]);
-
-      queryClient.setQueryData(["favorites"], (old = []) => {
-        const isFavorited = old.some((item) => item.id === productId);
-        if (isFavorited) {
-          return old.filter((item) => item.id !== productId);
-        } else {
-          const product = food_list?.find((item) => item.id === productId);
-          return [...old, product];
-        }
-      });
-
+   onMutate: async (productId) => {
+      await queryClient.cancelQueries(["favorites"]);
+      const previousFavorites = queryClient.getQueryData(["favorites"]) || [];
+      
+      const isCurrentlyFavorite = previousFavorites.some(
+        (fav) => fav.id === productId
+      );
+      
+      queryClient.setQueryData(["favorites"], (old = []) =>
+        isCurrentlyFavorite
+          ? old.filter((fav) => fav.id !== productId)
+          : [...old, { id: productId }] 
+      );
+      
       return { previousFavorites };
     },
-
     onError: (err, productId, context) => {
       queryClient.setQueryData(["favorites"], context.previousFavorites);
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      queryClient.invalidateQueries(["favorites"]);
     },
   });
 
@@ -154,29 +152,46 @@ const FilterByQatigory = () => {
                     >
                       {produit.name}
                     </Link>
+                   
                     <div className={styles.PriceContainer}>
-                      <span dir="ltr" className={styles.ProductPrice}>
-                        <bdi>درهم</bdi>{" "}
-                        {produit.oldPrice ? produit.oldPrice : produit.price}
-                      </span>
-                      {produit.oldPrice ? (
+                      {produit.discount > 0 && (
                         <span dir="ltr" className={styles.OldPrice}>
                           <bdi>درهم</bdi> {produit.price}
                         </span>
-                      ) : null}
+                      )}
+                      <span dir="ltr" className={styles.ProductPrice}>
+                        <bdi>درهم</bdi>
+                        {produit.discount
+                          ? (produit.price * (1 - produit.discount / 100)).toFixed(2)
+                          : produit.price}
+                      </span>
                     </div>
                   </div>
-
+    
+                  <div className={styles.InfoContainer}>
+                    {produit.reviews_count !== 0 && (
+                      <div className={styles.ReviewsInfo}>
+                        عدد التقييمات: <strong>{produit.reviews_count}</strong>
+                      </div>
+                    )}
+    
+                    {produit.favorites_count !== 0 && (
+                      <div className={styles.FavoritesInfo}>
+                        في المفضلة: <strong>{produit.favorites_count}</strong>
+                      </div>
+                    )}
+                  </div>
+{/* 
                   {produit.description && (
                     <p className={styles.ProductDescription}>
                       {produit.description}
-                    </p>
-                  )}
+                    </p> 
+                  )} */}
 
                   <div dir="ltr" className={styles.ProductFooter}>
-                    {produit.category_name && (
+                    {produit.category.name && (
                       <span className={styles.CategoryTag}>
-                        {produit.category_name}
+                        {produit.category.name}
                       </span>
                     )}
 

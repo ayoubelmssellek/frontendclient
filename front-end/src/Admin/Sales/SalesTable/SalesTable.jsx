@@ -1,71 +1,34 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './SalesTable.module.css';
+import {useQuery} from '@tanstack/react-query'
+import { fetchingSales } from '../../../Api/fetchingData/FetchAllSales';
 import {
   TrendingUp,
   Calendar,
-  ArrowUpRight,
-  ArrowDownRight,
+  // ArrowUpRight,
+  // ArrowDownRight,
   Package,
   Search
 } from 'lucide-react';
 
-const mockSales = [
-  {
-    id: "SAL-2024-001",
-    date: "2024-03-10T10:30:00",
-    items: [
-      { name: "Margherita Pizza", category: "Pizza", type: "Vegetarian", quantity: 2, price: 15.99 },
-      { name: "Pasta Carbonara", category: "Pasta", type: "Non-Vegetarian", quantity: 1, price: 12.99 }
-    ],
-    status: "completed",
-    total: 44.97
-  },
-  // Add more mock data entries...
-];
 
 const SalesTable = () => {
+  const { data: sales, isLoading } = useQuery({
+    queryKey: ['sales'],
+    queryFn: fetchingSales,
+  });
+  console.log('sales',sales);
+  
   const { t } = useTranslation();
   const [timeFilter, setTimeFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredSales = useMemo(() => {
-    const filterSales = (sales, filter) => {
-      const now = new Date();
-      const filterDate = new Date();
-      
-      switch(filter) {
-        case 'day': filterDate.setDate(now.getDate() - 1); break;
-        case 'week': filterDate.setDate(now.getDate() - 7); break;
-        case 'month': filterDate.setMonth(now.getMonth() - 1); break;
-        default: return sales;
-      }
-      return sales.filter(sale => new Date(sale.date) >= filterDate);
-    };
 
-    let filtered = filterSales(mockSales, timeFilter);
-    if(searchTerm) {
-      filtered = filtered.filter(sale =>
-        sale.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sale.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
-    return filtered;
-  }, [timeFilter, searchTerm]);
 
-  const analytics = useMemo(() => {
-    const completedSales = mockSales.filter(s => s.status === 'completed');
-    return {
-      totalRevenue: completedSales.reduce((sum, sale) => sum + sale.total, 0),
-      dailySales: 285.50,
-      weeklySales: 1895.30,
-      monthlySales: 8450.75
-    };
-  }, []);
-
-  const previousPeriodComparison = useMemo(() => ({
-    revenue: 12.5
-  }), []);
+  if(isLoading){
+    return <div className={styles.loading}>{t('loading')}</div>;
+  }
 
   return (
     <div className={styles.salesDashboard}>
@@ -75,9 +38,9 @@ const SalesTable = () => {
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.total_revenue')}</p>
-              <p className={styles.cardValue}>${analytics.totalRevenue.toFixed(2)}</p>
+              <p className={styles.cardValue}>__</p>
             </div>
-            <div className={`${styles.trend} ${
+            {/* <div className={`${styles.trend} ${
               previousPeriodComparison.revenue >= 0 ? styles.positive : styles.negative
             }`}>
               {previousPeriodComparison.revenue >= 0 ? (
@@ -86,16 +49,16 @@ const SalesTable = () => {
                 <ArrowDownRight color='var(--danger-color)' />
               )}
               {Math.abs(previousPeriodComparison.revenue)}%
-            </div>
+            </div> */}
           </div>
         </div>
-
+      
         {/* Daily Sales Card */}
         <div className={styles.analyticsCard}>
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.daily_sales')}</p>
-              <p className={styles.cardValue}>${analytics.dailySales.toFixed(2)}</p>
+              <p className={styles.cardValue}>__</p>
             </div>
             <Calendar color='var(--primary)'/>
           </div>
@@ -106,7 +69,7 @@ const SalesTable = () => {
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.weekly_sales')}</p>
-              <p className={styles.cardValue}>${analytics.weeklySales.toFixed(2)}</p>
+              <p className={styles.cardValue}>__</p>
             </div>
             <TrendingUp color='var(--success-color)'/>
           </div>
@@ -117,7 +80,7 @@ const SalesTable = () => {
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.monthly_sales')}</p>
-              <p className={styles.cardValue}>${analytics.monthlySales.toFixed(2)}</p>
+              <p className={styles.cardValue}>__</p>
             </div>
             <Package color='var(--icon-color)'/>
           </div>
@@ -166,38 +129,38 @@ const SalesTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSales.map((sale) =>
-              sale.items.map((item, index) => (
-                <tr key={`${sale.id}-${index}`} className={styles.tableRow}>
-                  <td className={styles.tableData}>{sale.id}</td>
+            {sales?.map((sale) =>
+              (
+                <tr key={`${sale.id}`} className={styles.tableRow}>
+                  <td className={styles.tableData}>{sale.sale_number ? sale.sale_number : sale.id }</td>
                   <td className={styles.tableData}>
-                    {new Date(sale.date).toLocaleDateString()}
+                    {sale.sold_at}
                   </td>
-                  <td className={styles.tableData}>{item.name}</td>
-                  <td className={styles.tableData}>{item.category}</td>
-                  <td className={styles.tableData}>{item.type}</td>
+                  <td className={styles.tableData}>{sale.product_name}</td>
+                  <td className={styles.tableData}>{sale.category_name}</td>
+                  <td className={styles.tableData}>{sale.type_name}</td>
                   <td className={styles.tableData}>
                     <span className={`${styles.statusBadge} ${
-                      sale.status === 'completed' ? styles.completed : styles.refunded
+                      sale.id? styles.completed : styles.refunded
                     }`}>
-                      {t(`status.${sale.status}`)}
+                      {`completed`}
                     </span>
                   </td>
                   <td className={styles.tableData}>
-                    ${(item.quantity * item.price).toFixed(2)}
+                    ${(sale.total_price)}
                   </td>
                 </tr>
-              ))
+              )
             )}
           </tbody>
         </table>
       </div>
 
-      {filteredSales.length === 0 && (
+      {/* {[].length === 0 && (
         <div className={styles.noResults}>
           <p>{t('empty_state.no_sales')}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

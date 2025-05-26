@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 class FavoriteController extends Controller
 {
  
@@ -33,21 +35,52 @@ class FavoriteController extends Controller
    public function index()
    {
        
-    //   return response()->json(Auth::user()->favorites()->with('product')->get());  //Eloquent method
-        
-        $favorites = DB::table('favorites')
-            ->join('products', 'favorites.product_id', '=', 'products.id') 
-            ->join('categories', 'categories.id', '=', 'products.category_id') // التصحيح هنا
-            ->where('favorites.user_id', Auth::id())
-            ->select('products.*', 'categories.name as category_name')
-            ->get();
+  $now = Carbon::now();
 
-        return response()->json($favorites);
+    $favorites = DB::table('favorites')
+        ->join('products', 'favorites.product_id', '=', 'products.id')
+        ->join('categories', 'categories.id', '=', 'products.category_id')
+        ->join('types', 'types.id', '=', 'products.type_id')
+        ->where('favorites.user_id', Auth::id())
+        ->select(
+            'products.*',
+            'categories.name as category_name',
+            'types.name as type_name',
+            DB::raw('(SELECT COUNT(*) FROM reviews WHERE reviews.product_id = products.id) as reviews_count'),
+            DB::raw('(SELECT COUNT(*) FROM favorites WHERE favorites.product_id = products.id) as favorites_count')
+        )
+        ->get();
 
-   //SELECT products.*
-   // FROM favorites
-   // JOIN products ON favorites.product_id = products.id                            // Normal SQL
-   // WHERE favorites.user_id = 5;
+    foreach ($favorites as $product) {
+        $productOffers = DB::table('special_offers')
+            ->join('special_offer_product', 'special_offers.id', '=', 'special_offer_product.special_offer_id')
+            ->where('special_offer_product.product_id', $product->id)
+            ->where('startDate', '<=', $now)
+            ->where('endDate', '>=', $now)
+            ->pluck('discount');
+
+        $categoryOffers = DB::table('special_offers')
+            ->join('special_offer_category', 'special_offers.id', '=', 'special_offer_category.special_offer_id')
+            ->where('special_offer_category.category_id', $product->category_id)
+            ->where('startDate', '<=', $now)
+            ->where('endDate', '>=', $now)
+            ->pluck('discount');
+
+        $typeOffers = DB::table('special_offers')
+            ->join('special_offer_type', 'special_offers.id', '=', 'special_offer_type.special_offer_id')
+            ->where('special_offer_type.type_id', $product->type_id)
+            ->where('startDate', '<=', $now)
+            ->where('endDate', '>=', $now)
+            ->pluck('discount');
+
+        $allDiscounts = $productOffers
+            ->merge($categoryOffers)
+            ->merge($typeOffers);
+
+        $product->discount = $allDiscounts->max() ?? 0;
+    }
+
+    return response()->json($favorites);
 
    }
 

@@ -4,12 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { FaArrowLeft, FaStar, FaChevronDown } from 'react-icons/fa';
 import { fetchUserOrders } from '../../../Api/fetchingData/FetchUserOrders';
 import styles from './addReview.module.css';
-
+import { fetchingAddReview } from '../../../Api/fetchingData/FetchAddreview';
+import { useMutation ,useQueryClient } from '@tanstack/react-query';
 const AddReview = () => {
   const { data: orders, isLoading } = useQuery({
     queryKey: ['orders'],
     queryFn: fetchUserOrders,
   });
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -61,7 +63,19 @@ const AddReview = () => {
     const years = Math.floor(months / 12);
     return `${years} سنة`;
   };
-
+  
+  const mutation = useMutation({
+    mutationFn: fetchingAddReview,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['orders']);
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('Error submitting review:', error);
+      alert('حدث خطأ أثناء إرسال المراجعة. يرجى المحاولة مرة أخرى.');
+    },
+  });
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = {};
@@ -74,12 +88,13 @@ const AddReview = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       const reviewData = {
-        product_id: selectedProduct?.id,
+        product_id: selectedProduct?.product_id,
         comment: text,
         rating
       };
-      // Add your submission logic here
-      console.log('Submitting review:', reviewData);
+      
+    mutation.mutate(reviewData);
+    
     }
   };
 

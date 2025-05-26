@@ -12,7 +12,7 @@ const TypeOffersTable = () => {
   const { t } = useTranslation();
   const deleteProductMutation = useDeleteOffre();
 
-  const typeOffers = offers?.filter(offer => !offer.product_id && offer.offer_type_name);
+  const typeOffers = offers?.filter(offer => offer.type === 'type');
   
   const handelDelete = async (IdOffre) => {
       deleteProductMutation.mutate(IdOffre);
@@ -33,7 +33,7 @@ const TypeOffersTable = () => {
         <tbody>
           {typeOffers.map(offer => (
             <tr key={offer.id}>
-              <td>{offer.offer_type_name}</td>
+              <td>{offer.target.name}</td>
               <td>{offer.discount}%</td>
               <td>{offer.startDate}</td>
               <td>{offer.endDate}</td>

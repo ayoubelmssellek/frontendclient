@@ -37,13 +37,21 @@ const Reviews = () => {
       <div className={styles.reviewsContainer}>
         <div className={styles.reviewsHeader}>
           <h1 className={styles.sectionTitle}>آراء العملاء</h1>
-          <button 
-            className={styles.addReviewBtn}
-            onClick={() => navigate('/addreview')}
-          >
-            <FaPlusCircle className={styles.btnIcon} />
-            أضف رأيك
-          </button>
+           <div className={styles.buttonsContainer}>
+            <button 
+              className={styles.addReviewBtn}
+              onClick={() => navigate('/addreview')}
+            >
+              <FaPlusCircle className={styles.btnIcon} />
+              أضف رأيك
+            </button>
+            <button 
+              className={styles.seeAllBtn}
+              onClick={() => navigate('/all-reviews')}
+            >
+              عرض جميع الآراء
+            </button>
+          </div>
         </div>
 
         <div className={styles.reviewsScrollContainer}>

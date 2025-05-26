@@ -11,46 +11,61 @@ class SpecialOfferController extends Controller
 {
         public function index()
         {
-            $offers = DB::table('special_offers')
-                ->leftJoin('special_offer_product', 'special_offers.id', '=', 'special_offer_product.special_offer_id')
-                ->leftJoin('products', 'products.id', '=', 'special_offer_product.product_id')
-                ->leftJoin('categories as product_category', 'product_category.id', '=', 'products.category_id')
-                ->leftJoin('types as product_type', 'product_type.id', '=', 'products.type_id')
+            SpecialOffer::where('endDate', '<=', now())->delete();
 
-                ->leftJoin('special_offer_category', 'special_offers.id', '=', 'special_offer_category.special_offer_id')
-                ->leftJoin('categories as offer_category', 'offer_category.id', '=', 'special_offer_category.category_id')
-
-                ->leftJoin('special_offer_type', 'special_offers.id', '=', 'special_offer_type.special_offer_id')
-                ->leftJoin('types as offer_type', 'offer_type.id', '=', 'special_offer_type.type_id')
-
-                ->where('special_offers.endDate', '>', now())
-
-                ->select(
-                    'special_offers.*',
-                    // product
-                    'products.id as product_id',
-                    'products.name as product_name',
-                    'products.price as product_price',
-                    'products.image_path as product_image',
-
-                    // فئة المنتج (لو العرض خاص بمنتج)
-                    'product_category.name as product_category_name',
-
-                    // نوع المنتج (لو العرض خاص بمنتج)
-                    'product_type.name as product_type_name',
-
-                    // فئة العرض (لو العرض خاص بفئة)
-                    'offer_category.name as offer_category_name',
-
-                    // نوع العرض (لو العرض خاص بنوع)
-                    'offer_type.name as offer_type_name'
-                )
+            $offers = SpecialOffer::with(['products', 'categories', 'types'])
+                ->where('endDate', '>', now())
                 ->get();
 
+            $offers = $offers->map(function ($offer) {
+                $data = [
+                    'id' => $offer->id,
+                    'title' => $offer->title,
+                    'discount' => $offer->discount,
+                    'startDate' => $offer->startDate,
+                    'endDate' => $offer->endDate,
+                    'description' => $offer->description,
+                    'image' => $offer->image_path,
+                    'type' => null,
+                    'target' => null,
+                ];
+
+                // نحدد نوع العرض بناءً على العلاقة المرتبطة
+                if ($offer->products->isNotEmpty()) {
+                    $product = $offer->products->first(); // نأخذ أول منتج
+                    $data['type'] = 'product';
+                    $data['target'] = [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'type' => $product->type->name ?? null,
+                        'category' => $product->category->name ?? null,
+                        'price' => $product->price,
+                        'image' => $product->image_path,
+                    ];
+                } elseif ($offer->categories->isNotEmpty()) {
+                    $category = $offer->categories->first();
+                    $data['type'] = 'category';
+                    $data['target'] = [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                        'image' => $category->image,
+                    ];
+                } elseif ($offer->types->isNotEmpty()) {
+                    $type = $offer->types->first();
+                    $data['type'] = 'type';
+                    $data['target'] = [
+                        'id' => $type->id,
+                        'name' => $type->name,
+                    ];
+                }
+
+                return $data;
+            });
 
             return response()->json($offers);
-
         }
+
+
 
         public function store(Request $request)
         {
@@ -88,16 +103,19 @@ class SpecialOfferController extends Controller
 
         public function destroy($id)
         {
-            $specialOffre = SpecialOffer::findOrFail($id);
+            DB::transaction(function () use ($id) {
+                $specialOffre = SpecialOffer::findOrFail($id);
 
-            $specialOffre->products()->detach();
-            $specialOffre->categories()->detach();
-            $specialOffre->types()->detach();
+                $specialOffre->products()->detach();
+                $specialOffre->categories()->detach();
+                $specialOffre->types()->detach();
 
-            $specialOffre->delete();
+                $specialOffre->delete();
+            });
 
             return response()->json(['message' => 'offre deleted successfully'], 200);
         }
+
 
 
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use App\Models\SpecialOffer;
+use App\Models\Sale;
 class Type extends Model
 {
     protected $fillable = [
@@ -18,8 +20,19 @@ class Type extends Model
     
     public function specialOffers()
     {
-        return $this->belongsToMany(SpecialOffer::class, 'special_offer_type');
+        return $this->belongsToMany(
+            SpecialOffer::class,
+            'special_offer_type',
+            'type_id',
+            'special_offer_id'
+        );
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
 
 
     protected static function booted(){
@@ -31,5 +44,8 @@ class Type extends Model
             ]);
         }
     });
+
+
+
 }
 }

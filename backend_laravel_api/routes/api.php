@@ -13,6 +13,7 @@ use App\Http\Controllers\SpecialOfferController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SalesController;
 
 
 
@@ -37,6 +38,13 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function (){
     Route::apiResource('/offres', SpecialOfferController::class);
     Route::apiResource('/employees', EmployeeController::class);
     Route::patch('/UpdateStatusReview/{id}', [ReviewController::class, 'ChangeReviewStatus']);
+
+    Route::prefix('sales')->group(function () {
+    Route::get('/', [SalesController::class, 'index']);               // جلب كل المبيعات مع فلترة اختيارية
+    Route::get('/top-categories', [SalesController::class, 'topCategories']);  // أكبر الفئات مبيعاً
+    Route::get('/top-types', [SalesController::class, 'topTypes']);          // أكبر الأنواع مبيعاً
+    Route::get('/by-product', [SalesController::class, 'salesByProduct']);   // مبيعات كل منتج
+});
 });
 
 Route::middleware(['auth:sanctum', 'manager'])->group(function (){
@@ -69,3 +77,5 @@ Route::get('/userOrders',[OrderController::class,'GetUserOrders'])->middleware('
 
 Route::post('/order', [OrderController::class, 'store']);
 
+
+Route::get('/reviews/{productId}', [ReviewController::class, 'Getreviewsbyid']);

@@ -19,19 +19,19 @@ const ShopingCart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(state => state.client.cartItems);
   const cartAmount = useSelector(state => state.client.cartAmount);
-  const Orders = useSelector(state => state.client.orders);
   const IScheckoutClicked=useSelector(state => state.client.toggelcheckoutClicked);
   const unifiedCartItems = cartItems.map(item => {
     return {
       id: item.id,
-      name: item.name || item.product_name, // اسم المنتج
-      quantity: item.quantity, // الكمية
-      price: parseFloat(item.price || item.total_price) || 0, // السعر
-      image: item.image_path || item.product_image || '', // الصورة
+      name: item.name || item.product_name,
+      quantity: item.quantity, 
+      price: parseFloat((item.discount? (item.price * (1 - item.discount / 100)).toFixed(2): item.price)  || item.total_price) || 0, 
+      image: item.image_path || item.product_image || '', 
     };
   });
   
-  const productTotalPricePerItem = unifiedCartItems.map(item => item.price  * item.quantity);
+  const productTotalPricePerItem = unifiedCartItems.map(item => item.price * item.quantity);
+                                                              
   
   const totalDebut = productTotalPricePerItem.reduce((total, item) => total + item, 0);
 
@@ -46,12 +46,12 @@ const ShopingCart = () => {
  const mutate=useMutation({
     mutationFn:fetchingAddOrder,
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries(['orders']);
       navigation('/orderSuccess');
       localStorage.removeItem('cartItems');
       localStorage.removeItem('cartAmount');
       dispatch(shoping_cart());
+      
     },
 
     onError: (error) => {
@@ -69,7 +69,7 @@ const ShopingCart = () => {
     if (Object.keys(errors).length === 0) {
       const orderItems = cartItems.map(item => ({
         product_id: item.id,  
-        total_price: item.price * item.quantity,
+        total_price: (item.discount? (item.price * (1 - item.discount / 100)).toFixed(2): item.price) * item.quantity,
         quantity: item.quantity,
       }));
       const newOrder = {
@@ -83,8 +83,7 @@ const ShopingCart = () => {
         status: 'pending',
         items: orderItems
       };
-            
-      mutate.mutate(newOrder);
+          mutate.mutate(newOrder);
     }
   };
 

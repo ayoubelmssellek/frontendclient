@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTo_Cart, DicreaseQuantity } from '../../actions/action';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,6 +18,7 @@ const FavoriteDishes = () => {
     queryKey: ['favorites'],
     queryFn: FetchingListFavorites  
   });
+  
 
   const mutation = useMutation({
     mutationFn: (productId) => fetchingToggleFavorite(productId),
@@ -53,7 +53,7 @@ const FavoriteDishes = () => {
   const decreaseProductQuantity = (id) => dispatch(DicreaseQuantity(id));
   const handleToggleFavorite = (productId) => mutation.mutate(productId);
    if (isLoading) return <Loading />;
-  if (isError) return <div className={styles.Error}>Error: {error.message}</div>;
+  if (isError) return <div className={styles.Error}>Error: {isError.message}</div>;
   return (
     <>
       <Navbar />
@@ -114,23 +114,40 @@ const FavoriteDishes = () => {
                     <Link to={`/product/${produit.id}`} className={styles.ProductTitle}>
                       {produit.name}
                     </Link>
-                    <div className={styles.PriceContainer}>
-                      <span dir='ltr' className={styles.ProductPrice}>
-                        <bdi>درهم</bdi> {produit.oldPrice ? produit.oldPrice : produit.price}
-                      </span>
-                      {produit.oldPrice && (
-                        <span dir='ltr' className={styles.OldPrice}>
-                          <bdi>درهم</bdi>{produit.price}
+                     <div className={styles.PriceContainer}>
+                        {produit.discount > 0 && (
+                          <span dir="ltr" className={styles.OldPrice}>
+                            <bdi>درهم</bdi> {produit.price}
+                          </span>
+                        )}
+                        <span dir="ltr" className={styles.ProductPrice}>
+                          <bdi>درهم</bdi>
+                          {produit.discount
+                            ? (produit.price * (1 - produit.discount / 100)).toFixed(2)
+                            : produit.price}
                         </span>
+                      </div>
+                    </div>
+      
+                    <div className={styles.InfoContainer}>
+                      {produit.reviews_count !== 0 && (
+                        <div className={styles.ReviewsInfo}>
+                          عدد التقييمات: <strong>{produit.reviews_count}</strong>
+                        </div>
+                      )}
+      
+                      {produit.favorites_count !== 0 && (
+                        <div className={styles.FavoritesInfo}>
+                          في المفضلة: <strong>{produit.favorites_count}</strong>
+                        </div>
                       )}
                     </div>
-                  </div>
 
-                  {produit.description && (
+                  {/* {produit.description && (
                     <p className={styles.ProductDescription}>
                       {produit.description}
                     </p>
-                  )}
+                  )} */}
 
                   <div dir='ltr' className={styles.ProductFooter}>
                     {produit.category_name && (

@@ -147,6 +147,13 @@ class OrderController extends Controller
         $order->status = $validated['status'];
         $order->save();
 
+        if($validated['status'] === 'delivered') {
+            return response()->json([
+                'message' => '✅ تم تحديث حالة الطلب إلى "تم التوصيل" بنجاح',
+                'order' => $order,
+            ], 200);
+        }
+
         return response()->json([
             'message' => '✅ aaaaaaaaaaaaaa تم تحديث حالة الطلب بنجاح',
             'order' => $order,

@@ -65,18 +65,18 @@ const Products = () => {
     }, [theme]);
 
     const types = useMemo(() => 
-        [...new Set(products?.map(product => product.type_name).filter(Boolean))],
+        [...new Set(products?.map(product => product.type.name).filter(Boolean))],
         [products]
     );
     const Category = useMemo(() =>
-        [...new Set(products?.map(product => product.category_name).filter(Boolean))],
+        [...new Set(products?.map(product => product.category.name).filter(Boolean))],
         [products]
     );
     const FiltringData = useMemo(() => 
         products?.filter((prods) => {
             const matchesName = prods?.name.toLowerCase().includes(searchByName.toLowerCase());
-            const matchesCategory = prods?.category_name?.toLowerCase().includes(searchByCategory.toLowerCase());
-            const matchesType = prods?.type_name?.toLowerCase().includes(searchByType.toLowerCase());
+            const matchesCategory = prods?.category.name?.toLowerCase().includes(searchByCategory.toLowerCase());
+            const matchesType = prods?.type.name?.toLowerCase().includes(searchByType.toLowerCase());
             return matchesName && matchesCategory && matchesType;
         }) || [],
         [products, searchByName, searchByCategory, searchByType]
@@ -299,8 +299,8 @@ const Products = () => {
                                             {currentData.map((item) => (
                                                 <tr key={item.id}>
                                                     <td>{item.name}</td>
-                                                    <td>{item.category_name}</td>
-                                                    <td>{item.type_name}</td>
+                                                    <td>{item.category.name}</td>
+                                                    <td>{item.type.name}</td>
                                                     <td>{item.price}</td>
                                                     <td>
                                                         <img className={styles.productImage} src={`http://localhost:8000/storage/${item.image_path}`} alt={item.name} />

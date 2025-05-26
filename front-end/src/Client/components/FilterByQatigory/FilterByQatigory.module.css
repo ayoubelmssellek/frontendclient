@@ -126,31 +126,51 @@
     flex-grow: 1;
 }
 
+
 .PriceContainer {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    gap: 4px;
+    margin-left: auto;
 }
 
 .ProductPrice {
     color: #e91e63;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 18px;
+    line-height: 1.2;
 }
 
 .OldPrice {
     color: #888;
-    font-size: 0.9rem;
+    font-size: 14px;
     text-decoration: line-through;
+    opacity: 0.8;
 }
 
-.ProductDescription {
-    color: #666;
+.InfoContainer {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ReviewsInfo,
+.FavoritesInfo {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 20px;
     font-size: 0.9rem;
-    margin: 10px 0;
-    line-height: 1.4;
-    height: 40px;
-    overflow: hidden;
+}
+
+.ReviewsInfo {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffa000;
+}
+
+.FavoritesInfo {
+    background: rgba(233, 30, 99, 0.1);
+    color: #e91e63;
 }
 
 .ProductFooter {

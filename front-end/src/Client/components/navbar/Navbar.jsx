@@ -90,9 +90,7 @@ import { useQuery } from '@tanstack/react-query';
         <Link to="/contactUs">
           <li className={location.pathname === '/contactUs' ? styles.active : ''}>Contact</li>
         </Link>
-        <Link to="/about">
-          <li className={location.pathname === '/contactUs' ? styles.active : ''}>About</li>
-        </Link>
+     
       </ul>
       
       <div className={styles.navbarRight}>

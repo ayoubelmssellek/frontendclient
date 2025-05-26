@@ -1,3 +1,4 @@
+/* ProductPage.module.css */
 .container {
     display: flex;
     flex-direction: column;
@@ -6,9 +7,6 @@
     min-height: 100vh;
     background: linear-gradient(to bottom, #ffbf00, tomato);
     padding-top: 30px;
-    position: fixed;
-    left: 0;
-    top: 0;
 }
 
 .headerContent {
@@ -25,6 +23,7 @@
     width: 90%;
     font-size: 18px;
     font-weight: bold;
+    padding: 15px 0;
 }
 
 .bagFill {
@@ -51,6 +50,7 @@
     justify-content: center;
     align-items: center;
     z-index: 10;
+    margin-bottom: 30px;
 }
 
 .productImage {
@@ -69,17 +69,12 @@
     background: rgb(255, 255, 255);
     border-radius: 40px 40px 0 0;
     padding: 20px;
-    position: absolute;
-    top: 25%;
-    bottom: 0;
-    left: 0;
-    min-height: 20vh;
-    box-shadow: 0px -10px 20px rgba(255, 255, 255, 0.2);
+    margin-top: -50px;
+    min-height: 60vh;
 }
 
 .productInfo {
     width: 100%;
-    margin-top: 37%;
     text-align: start;
     color: rgb(0, 0, 0);
 }
@@ -116,7 +111,7 @@
 
 .extraItemsSection {
     width: 100%;
-    margin: 5px 0;
+    margin: 20px 0;
 }
 
 .extraItemsTitle {
@@ -172,9 +167,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     width: 90%;
-    margin-top: 5px;
+    margin: 20px 0;
 }
 
 .price {
@@ -248,7 +242,6 @@
     border-radius: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     width: 60%;
-
 }
 
 .quantityButton {
@@ -273,6 +266,13 @@
     border: 1px solid whitesmoke;
     width: 100%;
     margin: 5px 0;
+}
+
+.reviewsSection {
+    width: 100%;
+    background: white;
+    padding: 20px;
+    margin-top: -30px;
 }
 
 @media (max-width: 480px) {

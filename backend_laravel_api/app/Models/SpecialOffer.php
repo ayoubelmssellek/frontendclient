@@ -14,8 +14,10 @@ class SpecialOffer extends Model
     protected $fillable = ['discount', 'startDate', 'endDate'];
 
 
-    public function products() {
-    return $this->belongsToMany(Product::class, 'special_offer_product');
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'special_offer_product', 'special_offer_id', 'product_id');
     }
 
     public function categories()
@@ -23,9 +25,10 @@ class SpecialOffer extends Model
         return $this->belongsToMany(Categorie::class, 'special_offer_category', 'special_offer_id', 'category_id');
     }
 
-
-    public function types() {
-        return $this->belongsToMany(Type::class, 'special_offer_type');
+    public function types()
+    {
+        return $this->belongsToMany(Type::class, 'special_offer_type', 'special_offer_id', 'type_id');
     }
+
 
 }

@@ -21,11 +21,14 @@ import Navbar from '../../components/navbar/Navbar'
    
      {
         IsMobile ?
+        <>
          <ProductPage/> 
+         </>
          :
       <>
          <Navbar/>
          < ProductPageDiskTopVersion/> 
+
       </>
      }
     </>

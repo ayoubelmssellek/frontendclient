@@ -1,11 +1,11 @@
-/* Base Styles */
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Chicle&family=Merienda:wght@300..900&display=swap');
+
 .food-slider-container {
   max-width: 1500px;
   margin: 80px auto 2rem;
   padding: 0 20px;
-
 }
+
 .slider-wrapper {
   position: relative;
   border-radius: 15px;
@@ -14,8 +14,6 @@
   background: url('headerimg.png') no-repeat center center/cover;
 }
 
-
-/* Slider & Slide */
 .slider {
   display: flex;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -24,7 +22,31 @@
 .slide {
   flex: 0 0 100%;
   position: relative;
-  min-height: 600px;
+  height: 550px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 4rem;
+}
+
+.slide-info {
+  width: 45%;
+  padding-left: 5%;
+  z-index: 100;
+  position: relative;
+}
+
+.slide-content {
+  position: relative;
+  width: 440px;
+  height: 420px;
+  border-radius: 10%;
+  top: -30px;
+  overflow: hidden;
+  background: #ff8300;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin-left: 5%;
+  margin-bottom: 1rem;
 }
 
 .slide-image {
@@ -32,47 +54,30 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  image-rendering: crisp-edges;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
-.slide .slide-info {
+
+.discount-label {
   position: absolute;
-  left: 10%; 
-  bottom: 20%;
-  z-index: 100;
-  padding: 5rem; 
-  width: 50%;
-}
-/* Slide Content */
-.slide-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 43%;
-  right: 10%; 
-  transform: translateY(-50%);
-  width: 440px;
-  height: 440px;
-  border-radius:10% ;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.1);
-  z-index: 2;
+  top: 30px;
+  left: 10px;
+  background: #e74c3c;
   color: white;
-  background-color: #ff8300;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transform: rotate(-5deg);
+  animation: pulse 2s infinite;
 }
-.slide-content .slide-image{
-  width: 100%;
-  height: 100%;
-  border-radius:10% ;
-  
 
-
+@keyframes pulse {
+  0% { transform: rotate(-30deg) scale(1); }
+  50% { transform: rotate(-30deg) scale(1.05); }
+  100% { transform: rotate(-30deg) scale(1); }
 }
+
 .category-badge {
   display: inline-block;
   background: #ff9f43;
@@ -80,42 +85,31 @@
   padding: 0.5rem 1.2rem;
   border-radius: 20px;
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .slide-title {
   font-family: "Chicle", sans-serif;
-  font-weight: 800;
-  font-style: normal;
-  font-size: 3.9rem;
-  margin: 0 0 1rem;
-  line-height: 1.2;
+  font-size: 3.5rem;
+  margin: 0 0 1.5rem;
   color: white;
-  text-shadow: 5PX 5PX 5PX black;
-}
-
-.slide-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  max-width: 80%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
 }
 
 .price-container {
   display: flex;
   align-items: center;
   gap: 2rem;
+  margin-top: 2rem;
 }
 
 .slide-price {
   font-size: 2rem;
-  font-weight:bolder;
-  color:tomato;
-  text-shadow: 5PX 5PX 5PX black;
+  color: white;
   font-family: "Chicle", sans-serif;
-  font-style: normal;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .order-button {
@@ -127,7 +121,6 @@
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 400px;
 }
 
 .order-button:hover {
@@ -135,7 +128,6 @@
   transform: translateY(-2px);
 }
 
-/* Controls */
 .control {
   position: absolute;
   top: 50%;
@@ -149,7 +141,6 @@
   border-radius: 50%;
   backdrop-filter: blur(5px);
   transition: all 0.3s ease;
-  z-index: 3;
   width: 50px;
   height: 50px;
   display: flex;
@@ -165,7 +156,6 @@
 .prev { left: 20px; }
 .next { right: 20px; }
 
-/* Progress Bar */
 .progress-bar {
   position: absolute;
   bottom: 0;
@@ -173,7 +163,6 @@
   width: 100%;
   height: 4px;
   background: rgba(255, 255, 255, 0.2);
-  z-index: 2;
 }
 
 .progress {
@@ -182,7 +171,6 @@
   transition: width 0.5s linear;
 }
 
-/* Thumbnails */
 .thumbnails {
   position: absolute;
   bottom: 20px;
@@ -207,7 +195,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
 }
 
 .thumbnail.active {
@@ -216,7 +203,6 @@
   box-shadow: 0 0 15px rgba(255, 159, 67, 0.5);
 }
 
-/* Empty State */
 .no-slides-message {
   display: flex;
   align-items: center;
@@ -226,72 +212,4 @@
   font-size: 1.2rem;
   background: #f5f5f5;
   border-radius: 10px;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .slide-content {
-    max-width: 400px;
-    left: 5%;
-  }
-  
-  .slide-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .slide {
-    min-height: 500px;
-  }
-  
-  .slide-content {
-    max-width: 90%;
-    padding: 1.5rem;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-  
-  .slide-title {
-    font-size: 1.8rem;
-  }
-  
-  .slide-description {
-    max-width: 100%;
-    font-size: 1rem;
-  }
-  
-  .thumbnails {
-    bottom: 10px;
-  }
-  
-  .thumbnail {
-    width: 70px;
-    height: 50px;
-  }
-  
-  .control {
-    padding: 0.8rem;
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .slide-content {
-    padding: 1rem;
-  }
-  
-  .slide-title {
-    font-size: 1.5rem;
-  }
-  
-  .slide-price {
-    font-size: 1.5rem;
-  }
-  
-  .order-button {
-    padding: 0.8rem 2rem;
-    font-size: 1rem;
-  }
 }

@@ -8,6 +8,7 @@ import ContactForm from '../../components/ProductPage/ProductPage';
 import Reviews from '../../components/Reviews/Reviews';
 import LocationSection from '../../components/OurLocation/useUserLocation';
 import MobileFoodSlider from '../../components/header/MobileFoodSlider/MobileFoodSlider';
+import PopularDishes from '../../components/PopularDishes/PopularDishes';
 
 const Home = () => { 
  const [isMobile,setIsMobile]=useState(window.innerWidth<=576)
@@ -35,7 +36,7 @@ const Home = () => {
       }
        <ExploreMenu/>
        <FoodDisplay/>
-       {/* <ContactForm/> */}
+       <PopularDishes/>
        <LocationSection/>
        <Reviews/>
       <Footer/>

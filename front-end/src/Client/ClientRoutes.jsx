@@ -64,7 +64,7 @@ const AddReview = lazy(() => import("./components/Reviews/AddReview"));
 const OrderHistory = lazy(() => import("./components/Order-history/OrderHistory"));
 const Settings = lazy(() => import("./components/AccountSettings/AccountSetting"));
 const ContactForm = lazy(() => import("./components/ContactUs/ContactUs"));
-
+const AllReviews = lazy(() => import("./components/Reviews/all_reviews"));
 function ClientRoutes() {
   return (
     <div className="clientapp">
@@ -83,6 +83,7 @@ function ClientRoutes() {
           <Route path="/addreview" element={<AddReview />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/all-reviews" element={<AllReviews />} />
           <Route path="/contactUs" element={<ContactForm />} />
         </Routes>
       </Suspense>

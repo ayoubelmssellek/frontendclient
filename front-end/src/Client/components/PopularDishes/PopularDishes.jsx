@@ -1,4 +1,3 @@
-import React from "react";
 import {
   MdAddShoppingCart,
   MdRemove,
@@ -7,7 +6,7 @@ import {
   MdFavorite,
   MdFavoriteBorder,
 } from "react-icons/md";
-import styles from "./Fooddesplay.module.css";
+import styles from "./PopularDishes.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTo_Cart, DicreaseQuantity } from "../../actions/action";
 import { Link } from "react-router-dom";
@@ -17,7 +16,7 @@ import { fetchingToggleFavorite } from "../../../Api/fetchingData/FetchToggleFav
 import { FetchingListFavorites } from "../../../Api/fetchingData/FetchListFavorite";
 import Loading from "../../../Helper/Loading/Loading";
 
-const FoodDisplay = () => {
+const PopularDishes = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -29,14 +28,12 @@ const FoodDisplay = () => {
     queryKey: ["products"],
     queryFn: fetchingProducts,
   });
-  console.log("food_list", food_list);
-  
 
   const filtredlist = food_list?.filter(i => 
     i.category.name.toLowerCase() !== 'extra' && 
-    i.category.name.toLowerCase() !== 'jus'
+    i.category.name.toLowerCase() !== 'jus'&&
+    i.name.toLowerCase().includes("gusto")
   );
-  
 
   const { 
     data: favoriteList = [], 
@@ -94,7 +91,7 @@ const FoodDisplay = () => {
 
   return (
     <div className={styles["Food-desplay"]}>
-      <h1 className={styles.QategoryName}>أشهر الأطباق</h1>
+      <h1 className={styles.QategoryName}> اكتشف أطباقنا</h1>
       <div className={styles["Food-desplay-list"]}>
         {filtredlist?.slice(-10).map((product) => (
           <div key={product.id} className={styles.Cart}>
@@ -103,12 +100,12 @@ const FoodDisplay = () => {
                 product.status === "out of stock" ? styles.OutOfStockOverlay : ""
               }`}
             >
-                              {/* Add discount badge here */}
-                {product.discount > 0 && (
-                  <div className={styles.DiscountBadge}>
-                    <span>{product.discount}% تخفيض</span>
-                  </div>
-                )}
+                {/* Add discount badge here */}
+  {product.discount > 0 && (
+    <div className={styles.DiscountBadge}>
+      <span>{product.discount}% تخفيض</span>
+    </div>
+  )}
               <img
                 src={`http://localhost:8000/storage/${product.image_path}`}
                 alt={product.name}
@@ -235,4 +232,4 @@ const FoodDisplay = () => {
   );
 };
 
-export default FoodDisplay;
+export default PopularDishes;

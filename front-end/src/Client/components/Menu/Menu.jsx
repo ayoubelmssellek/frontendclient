@@ -19,9 +19,10 @@ import Loading from "../../../Helper/Loading/Loading";
   });
 
   const CartItems = useSelector((state) => state.client.cartItems);
-  // حذفنا Favorite من redux لأننا غادي نعتمد على react-query cache للفيفوريت
-
-  // Mutation مع optimistic update
+   const filtredList = food_list?.filter(i =>
+    i.category.name.toLowerCase() !== 'extra' &&
+    i.category.name.toLowerCase() !== 'jus'
+  );
   const mutation = useMutation({
     mutationFn: (productId) => fetchingToggleFavorite(productId),
     onMutate: async (productId) => {
@@ -55,9 +56,9 @@ import Loading from "../../../Helper/Loading/Loading";
   const FavoriteList = queryClient.getQueryData(['favorites']) || [];
 
   const groupedArray = useMemo(() => {
-    if (!food_list) return [];
+    if (!filtredList) return [];
   
-    const grouped = food_list.reduce((acc, item) => {
+    const grouped = filtredList.reduce((acc, item) => {
       if (!acc[item.category_name]) {
         acc[item.category_name] = [];
       }
@@ -69,7 +70,7 @@ import Loading from "../../../Helper/Loading/Loading";
       category,
       items
     }));
-  }, [food_list]);
+  }, [filtredList]);
 
   const isInCart = (id) => CartItems?.some((item) => item.id === id);
   const isitClicked = (id) => FavoriteList?.some(item => item.id === id);
@@ -105,6 +106,12 @@ import Loading from "../../../Helper/Loading/Loading";
                     className={styles.ProductImage}
                     loading="lazy" 
                   />
+                                  {/* Add discount badge here */}
+  {produit.discount > 0 && (
+    <div className={styles.DiscountBadge}>
+      <span>{produit.discount}% تخفيض</span>
+    </div>
+  )}
                   {produit.status === 'out of stock' && (
                     <div className={styles.OutOfStock}>غير متوفر</div>
                   )}
@@ -131,25 +138,37 @@ import Loading from "../../../Helper/Loading/Loading";
                       {produit.name}
                     </Link>
                     <div className={styles.PriceContainer}>
-                      <span dir="ltr" className={styles.ProductPrice}>
-                        <bdi>درهم</bdi> {produit.oldPrice ? produit.oldPrice : produit.price}
-                      </span>
-                      {produit.oldPrice && (
+                      {produit.discount > 0 && (
                         <span dir="ltr" className={styles.OldPrice}>
                           <bdi>درهم</bdi> {produit.price}
                         </span>
                       )}
+                      <span dir="ltr" className={styles.ProductPrice}>
+                        <bdi>درهم</bdi>
+                        {produit.discount
+                          ? (produit.price * (1 - produit.discount / 100)).toFixed(2)
+                          : produit.price}
+                      </span>
                     </div>
                   </div>
-                  {produit.description && (
-                    <p className={styles.ProductDescription}>
-                      {produit.description}
-                    </p>
-                  )}
+    
+                  <div className={styles.InfoContainer}>
+                    {produit.reviews_count !== 0 && (
+                      <div className={styles.ReviewsInfo}>
+                        عدد التقييمات: <strong>{produit.reviews_count}</strong>
+                      </div>
+                    )}
+    
+                    {produit.favorites_count !== 0 && (
+                      <div className={styles.FavoritesInfo}>
+                        في المفضلة: <strong>{produit.favorites_count}</strong>
+                      </div>
+                    )}
+                  </div>
                   <div dir="ltr" className={styles.ProductFooter}>
-                    {produit.category_name && (
+                    {produit.category.name && (
                       <span className={styles.CategoryTag}>
-                        {produit.category_name}
+                        {produit.category.name}
                       </span>
                     )}
                     <div dir="ltr" className={styles.ActionButtons}>

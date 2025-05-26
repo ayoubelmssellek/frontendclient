@@ -9,8 +9,10 @@ const ProductOffersTable = () => {
   const { data: offers = [] } = useQuery({ queryKey: ['offres'], queryFn: fetchingOffres });
   const { t } = useTranslation();
   const deleteProductMutation = useDeleteOffre(); 
+  
 
-  const productOffers = offers.filter((o) => o.product_id);
+  const productOffers = offers.filter((o) => o.type === 'product');
+  
 
   const calculateNewPrice = (price, discount) => {
     return (price - (price * discount) / 100).toFixed(2);
@@ -40,17 +42,17 @@ const ProductOffersTable = () => {
         <tbody>
           {productOffers.map((offer) => (
             <tr key={offer.id}>
-              <td>{offer.product_name}</td>
-              <td>{offer.product_category_name}</td>
-              <td>{offer.product_type_name}</td>
-              <td>{offer.product_price}</td>
+              <td>{offer.target.name}</td>
+              <td>{offer.target.category}</td>
+              <td>{offer.target.type}</td>
+              <td>{offer.target.price}</td>
               <td>{offer.discount}%</td>
-              <td>{calculateNewPrice(offer.product_price, offer.discount)}</td>
+              <td>{calculateNewPrice(offer.target.price, offer.discount)}</td>
               <td>{offer.startDate}</td>
               <td>{offer.endDate}</td>
               <td>
-                {offer.product_image && (
-                  <img src={`http://localhost:8000/storage/${offer.product_image}`} alt="product" />
+                {offer.target.image && (
+                  <img src={`http://localhost:8000/storage/${offer.target.image}`} alt="product" />
                 )}
               </td>
               <td>

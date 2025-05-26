@@ -15,6 +15,7 @@ import { addTo_Cart, addTo_Favorite, DicreaseQuantity } from '../../actions/acti
 import { FaArrowRight } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
 import { fetchingProducts } from '../../../Api/fetchingData/FetchProducts';
+import ProductReviews from '../Reviews/ProductReviews';
 
 const ProductPage = () => {
     const { data: food_list, loading, error } = useQuery({
@@ -25,7 +26,7 @@ const ProductPage = () => {
     const dispatch = useDispatch();
     const { cartItems, Favorite, cartAmount } = useSelector((state) => state.client);
 
-    const extraItems = food_list?.filter((item) => item.category_name == 'Jus');
+    const extraItems = food_list?.filter((item) => item.category.name == 'Jus');
     const product = food_list?.find(item => item.id == id);
     const inCart = cartItems.some(item => item.id == id);
     const isFavorite = Favorite.some(item => item.id == id);
@@ -53,7 +54,7 @@ const ProductPage = () => {
                 </div>
                 <div className={styles.imageContainer}>
                     <img 
-                        src={`http://localhost:8000/storage/${product.image_path}`}	 
+                        src={`http://localhost:8000/storage/${product.image_path}`}    
                         alt={product.name} 
                         className={styles.productImage} 
                         loading="lazy" 
@@ -66,7 +67,7 @@ const ProductPage = () => {
                     <div className={styles.productHeader}>
                         <div className={styles.titleGroup}>
                             <h1 className={styles.productTitle}>{product.name}</h1>
-                            <h4 className={styles.productCategory}>{product.category_name}</h4>
+                            <h4 className={styles.productCategory}>{product.category.name}</h4>
                         </div>
                         <button
                             className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteButtonActive : ''}`}
@@ -78,7 +79,6 @@ const ProductPage = () => {
                     
                     <p className={styles.productDescription}>{product.description}</p>
                     
-                    {/* Extra Items Section */}
                     <div className={styles.extraItemsSection}>
                         <h3 className={styles.extraItemsTitle}>إضافات إختيارية</h3>
                         <div className={styles.extraItemsContainer}>
@@ -152,6 +152,10 @@ const ProductPage = () => {
                         </div>
                     )}
                 </div>
+            </div>
+
+            <div className={styles.reviewsSection}>
+                <ProductReviews id={product.id} />
             </div>
         </div>
     );

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\SpecialOffer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -15,63 +16,48 @@ class ProductController extends Controller
 
 public function index()
 {
-    $now = Carbon::now();
 
-    // استعلام المنتجات
-    $products = DB::table('products')
-        ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
-        ->leftJoin('types', 'products.type_id', '=', 'types.id')
-        ->select('products.*', 'categories.name as category_name', 'types.name as type_name')
-        ->get();
+    SpecialOffer::where('endDate', '<=', now())->delete();
+
+    $products = Product::with([
+        'category.specialOffers' => function($query) {
+            $query->where('endDate', '>', now());
+        },
+        'type.specialOffers' => function($query) {
+            $query->where('endDate', '>', now());
+        },
+        'specialOffers' => function($query) {
+            $query->where('endDate', '>', now());
+        },
+        'reviews',
+        'favorites',
+    ])->get();
 
     foreach ($products as $product) {
-        $applicableOffers = collect();
+        $allOffers = collect();
 
-        // عروض المنتج المباشرة
-        $productOffers = DB::table('special_offers')
-            ->join('special_offer_product', 'special_offers.id', '=', 'special_offer_product.special_offer_id')
-            ->where('special_offer_product.product_id', $product->id)
-            ->where('startDate', '<=', $now)
-            ->where('endDate', '>=', $now)
-            ->get();
+        if ($product->specialOffers) {
+            $allOffers = $allOffers->merge($product->specialOffers);
+        }
+        if ($product->category && $product->category->specialOffers) {
+            $allOffers = $allOffers->merge($product->category->specialOffers);
+        }
+        if ($product->type && $product->type->specialOffers) {
+            $allOffers = $allOffers->merge($product->type->specialOffers);
+        }
 
-        // عروض على الفئة
-        $categoryOffers = DB::table('special_offers')
-            ->join('special_offer_category', 'special_offers.id', '=', 'special_offer_category.special_offer_id')
-            ->where('special_offer_category.category_id', $product->category_id)
-            ->where('startDate', '<=', $now)
-            ->where('endDate', '>=', $now)
-            ->get();
-
-        // عروض على النوع
-        $typeOffers = DB::table('special_offers')
-            ->join('special_offer_type', 'special_offers.id', '=', 'special_offer_type.special_offer_id')
-            ->where('special_offer_type.type_id', $product->type_id)
-            ->where('startDate', '<=', $now)
-            ->where('endDate', '>=', $now)
-            ->get();
-
-        // دمج العروض
-        $allOffers = $productOffers->merge($categoryOffers)->merge($typeOffers);
-
-        // اختيار العرض الأفضل (أعلى خصم)
         $bestOffer = $allOffers->sortByDesc('discount')->first();
 
-        $product->discount = $bestOffer->discount ?? 0;
-
-        // عدد التقييمات
-        $product->reviews_count = DB::table('reviews')
-            ->where('product_id', $product->id)
-            ->count();
-
-        // عدد المفضلة
-        $product->favorites_count = DB::table('favorites')
-            ->where('product_id', $product->id)
-            ->count();
+        $product->discount = $bestOffer ? $bestOffer->discount : 0;
+        $product->reviews_count = $product->reviews->count();
+        $product->favorites_count = $product->favorites->count();
     }
 
     return response()->json($products);
 }
+
+
+
 
 
 

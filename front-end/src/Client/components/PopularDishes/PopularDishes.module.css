@@ -1,4 +1,4 @@
-/* Fooddesplay.module.css */
+/* PopularDishes.module.css */
 .Food-desplay {
     display: flex;
     flex-direction: column;
@@ -29,6 +29,34 @@
     border-radius: 2px;
 }
 
+/* Add to your PopularDishes.module.css */
+.DiscountBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #e74c3c;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transform: rotate(-5deg);
+  animation: pulse 2s infinite;
+}
+
+.DiscountBadge span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@keyframes pulse {
+  0% { transform: rotate(-5deg) scale(1); }
+  50% { transform: rotate(-5deg) scale(1.05); }
+  100% { transform: rotate(-5deg) scale(1); }
+}
 .Food-desplay-list {
     display: flex;
     gap: 10px;
@@ -119,34 +147,6 @@
     align-items: flex-start;
     margin-bottom: 10px;
     gap: 10px;
-}
-/* Add to your PopularDishes.module.css */
-.DiscountBadge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: #e74c3c;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: bold;
-  z-index: 2;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transform: rotate(-5deg);
-  animation: pulse 2s infinite;
-}
-
-.DiscountBadge span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-@keyframes pulse {
-  0% { transform: rotate(-5deg) scale(1); }
-  50% { transform: rotate(-5deg) scale(1.05); }
-  100% { transform: rotate(-5deg) scale(1); }
 }
 
 .ProductTitle {
