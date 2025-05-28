@@ -40,16 +40,19 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function (){
     Route::patch('/UpdateStatusReview/{id}', [ReviewController::class, 'ChangeReviewStatus']);
 
     Route::prefix('sales')->group(function () {
-    Route::get('/', [SalesController::class, 'index']);               // جلب كل المبيعات مع فلترة اختيارية
-    Route::get('/top-categories', [SalesController::class, 'topCategories']);  // أكبر الفئات مبيعاً
-    Route::get('/top-types', [SalesController::class, 'topTypes']);          // أكبر الأنواع مبيعاً
-    Route::get('/by-product', [SalesController::class, 'salesByProduct']);   // مبيعات كل منتج
+    Route::get('/', [SalesController::class, 'index']);               
+    Route::get('/top-categories', [SalesController::class, 'topCategories']);  
+    Route::get('/top-types', [SalesController::class, 'topTypes']);         
+    Route::get('/by-product', [SalesController::class, 'salesByProduct']);  
+    Route::get('/by-filters', [SalesController::class, 'filter_by_times']);
+    Route::get('/sales_statistic', [SalesController::class, 'sales_statistic']);
 });
 });
 
 Route::middleware(['auth:sanctum', 'manager'])->group(function (){
     Route::apiResource('/type', TypeController::class);
     Route::get('/orders', [OrderController::class, 'GetAllOrders']);
+    Route::get('/order/{id}', [OrderController::class, 'GetOrderById']);
     Route::patch('/order/{id}', [OrderController::class, 'UpdateOrderStatus']);
     Route::patch('/product/{id}', [ProductController::class, 'UpdateProductStatus']);
     Route::patch('/UpdateStatusType/{id}', [TypeController::class, 'updateTypeStatus']);

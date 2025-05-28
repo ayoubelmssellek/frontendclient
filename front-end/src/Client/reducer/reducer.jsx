@@ -112,12 +112,13 @@ const initState = {
 
            };
         }}
+        break
 
         case 'clear':
           return{
             ...state,cartItems:[],
             cartAmount:0
-
+            
           }
           case 'addTo_Favorite': {
             const correntFavoriteList=localStorage.getItem('FavoriteList')?

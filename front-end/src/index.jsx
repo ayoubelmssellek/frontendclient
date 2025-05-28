@@ -7,6 +7,7 @@ import i18n from './Utils/i18n';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'; // إضافة React Query DevTools
 
 
+
 const queryClient = new QueryClient(); // إنشاء الـ QueryClient
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from '../Notification/Notification.module.css';
-import { ClearNotificationListe } from "../Redux/Action";
+// import { ClearNotificationListe } from "../Redux/Action";
 import { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar/Navbar";
@@ -19,7 +19,7 @@ const Notifiication = () => {
     
   const handelClearAll = () => {
     localStorage.removeItem('notificationListe');
-    dispatch(ClearNotificationListe());
+    // dispatch(ClearNotificationListe());
   };
 
   return (

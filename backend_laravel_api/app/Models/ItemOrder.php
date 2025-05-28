@@ -24,4 +24,4 @@ class ItemOrder extends Model
     {
         return $this->belongsTo(Order::class);
     }
-}
+};

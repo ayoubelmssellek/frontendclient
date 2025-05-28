@@ -233,8 +233,10 @@ const ListeOrders = () => {
                         </span>
                       </td>
                       <td>
-                        <Link to={`/admin/Dashboard/${role}/ViewOrderDetails/${order.id}`}>
-                          <Eye color="#3b82f6" />
+                        <Link to={`/Dashboard/${role}/ViewOrderDetails/${order.id}`}>
+                          <button className={styles.viewButton}>
+                            Order Details
+                          </button>
                         </Link>
                       </td>
                     </tr>

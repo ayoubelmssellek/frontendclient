@@ -1,10 +1,10 @@
-import React, { use, useState } from "react";
+import  {  useState } from "react";
 import { FaChevronDown, FaBox, FaCheckCircle, FaMotorcycle, FaRedoAlt, FaArrowRight } from "react-icons/fa";
 import styles from "./OrderHistory.module.css";
 import Navbar  from "../navbar/Navbar";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setReorder } from "../../actions/action";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { fetchUserOrders } from "../../../Api/fetchingData/FetchUserOrders";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Helper/Loading/Loading";
@@ -34,8 +34,7 @@ const OrderHistory = () => {
   };
 
   const handleReorder = (order) => {
-    console.log(order);
-    
+    console.log('order',order);
     dispatch(setReorder(order));
     navigator("/shoupingCart"); 
   };

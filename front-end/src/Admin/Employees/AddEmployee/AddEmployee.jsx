@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AddEmployee } from '../../Redux/Action';
+// import { AddEmployee } from '../../Redux/Action';
 import PropTypes from 'prop-types';
 import styles from './AddEmployees.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchingAddEmployee } from '../../../Api/fetchingData/FetchAddEmployee';
 
 const AddEmployees = ({ onClose }) => {
-  const Empls = useSelector((state) => state.admin.Employees);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const queryClient = useQueryClient();
 
@@ -67,7 +65,6 @@ const AddEmployees = ({ onClose }) => {
       salary: parseFloat(Salary_Employee),
     };
 
-    dispatch(AddEmployee(newEmployee));
     addEmployeeMutation.mutate(newEmployee);
     onClose();
   };

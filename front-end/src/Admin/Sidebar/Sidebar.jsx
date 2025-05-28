@@ -82,7 +82,7 @@ export default function Sidebar({ isOpen, onSidebarStateChange }) {
 
       <nav className="sidebar-menu">
         <ul>
-          <Link to={`/admin/Dashboard/${role}`}>
+          <Link to={`/Dashboard/${role}`}>
             <li>
               <div className={`menu-item ${isOpen ? "hoverable" : ""}`}>
                 <FaTh className="menu-icon" />
@@ -92,7 +92,7 @@ export default function Sidebar({ isOpen, onSidebarStateChange }) {
           </Link>
           {
             parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin' && (
-                        <Link to={`/admin/Dashboard/${role}/Employees`}>
+                        <Link to={`/Dashboard/${role}/Employees`}>
                           <li>
                             <div className={`menu-item ${isOpen ? "hoverable" : ""}`}>
                               <MdPeople className="menu-icon" />
@@ -105,7 +105,7 @@ export default function Sidebar({ isOpen, onSidebarStateChange }) {
 
            {
              parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin' && (
-                        <Link to={`/admin/Dashboard/${role}/Categories`}>
+                        <Link to={`/Dashboard/${role}/Categories`}>
                           <li>
                             <div className={`menu-item ${isOpen ? "hoverable" : ""}`}>
                               <FaThList className="menu-icon" />
@@ -117,7 +117,7 @@ export default function Sidebar({ isOpen, onSidebarStateChange }) {
            }
            {
              parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin' && (
-                        <Link to={`/admin/Dashboard/${role}/Types`}>
+                        <Link to={`/Dashboard/${role}/Types`}>
                           <li>
                             <div className={`menu-item ${isOpen ? "hoverable" : ""}`}>
                               <FaThList className="menu-icon" />
@@ -129,7 +129,7 @@ export default function Sidebar({ isOpen, onSidebarStateChange }) {
            }
           {
              parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin' && (
-                        <Link to={`/admin/Dashboard/${role}/ListeOffers`}>
+                        <Link to={`/Dashboard/${role}/ListeOffers`}>
                           <li>
                             <div className={`menu-item ${isOpen ? "hoverable" : ""}`}>
                               <FaGift className="menu-icon" />

@@ -27,7 +27,7 @@ const LoginForm = () => {
       console.log(data)
       
       if (data.user.role_name === 'admin' || data.user.role_name === 'manager') {
-        navigate(`/admin/Dashboard/${data.user.role_name}`);
+        navigate(`/Dashboard/${data.user.role_name}`);
       } else {
         navigate('/');
       }

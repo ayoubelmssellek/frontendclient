@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchingCategories } from "../../Api/fetchingData/FetchCategories";
 import { fetchingDeleteCategory } from "../../Api/fetchingData/FetchDeleteCategory";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import WarningAlert from "../../Helper/AlertsMsg/WarningMsg";
 const Categories = () => {
   const {data,isLoading,error} = useQuery({
     queryKey: ['categories'],
@@ -90,13 +91,14 @@ const Categories = () => {
   return (
     <div className={styles.content} dir={isRTL ? "rtl" : "ltr"}>
       <Sidebar isOpen={isOpen} onSidebarStateChange={handleSidebarStateChange} />
-
+      
       <div className={`${styles.categoriesContainer} ${isOpen ? styles.categoriesContainerPush : styles.categoriesContainerNoPush}`}>
         <Navbar pagePath={t("titles.Categories")} />
-
+        
         <div className={styles.pages}>
           <div className={styles.categoriesContent}>
             {/* Header Section */}
+             <WarningAlert message="If you delete a category, all products belonging to that category will also be removed." />
             <div className={styles.headerSection}>
               <div className={styles.headerLeft}>
                 <div className={styles.categoryCounter}>

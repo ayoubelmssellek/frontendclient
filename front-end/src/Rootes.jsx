@@ -21,7 +21,7 @@ function AppRoutes() {
   });
 
  useEffect(() => {
-  if (isError && (window.location.pathname.startsWith("/admin") || window.location.pathname === "/")) {
+  if (isError && (window.location.pathname.startsWith("/admin") || window.location.pathname === "/")){
     localStorage.removeItem("authToken");
     navigate("/", { replace: true });
   }
@@ -35,7 +35,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route
-        path="/admin/*"
+        path="/Dashboard/*"
         element={
           <ProtectedRoute isAllowed={token && isAdmin}>
             <AdminRoutes />

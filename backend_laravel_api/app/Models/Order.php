@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\ItemOrder;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class Order extends Model
 {
@@ -52,10 +54,10 @@ class Order extends Model
                             'type_id'     => $product->type_id,
                             'quantity'    => $item->quantity,
                             'total_price' => $item->quantity * $product->price,
-                            'sale_date'   => now(),
+                            'sale_date' =>  now(),
+
                         ]);
                     }
-
                     $order->delete(); 
                 });
             }

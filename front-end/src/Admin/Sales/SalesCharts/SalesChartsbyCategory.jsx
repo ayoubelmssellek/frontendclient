@@ -1,53 +1,38 @@
-import { useMemo } from 'react'; // Add this import
+import { useQuery } from '@tanstack/react-query';
 import ReactApexChart from 'react-apexcharts';
-import styles from '../SalesCharts/SalesChartsbyCategory.module.css';
 import { useTranslation } from 'react-i18next';
+import { fetching_sales_by_type } from '../../../Api/fetchingData/FetchSalesByType';
+import { useMemo, useState } from 'react';
+import styles from '../SalesCharts/SalesChartsbyCategory.module.css';
+import { defaultChartColors } from '../../../Utils/chartColors';
 
 const ApexDonutChartbyCatigory = () => {
   const { t } = useTranslation();
+  const [timeFilter, setTimeFilter] = useState(1);
 
-  // Data definitions
-  const Types = [
-    { Type: 'Poulet', value: 2450 },
-    { Type: 'Nuggets', value: 1830 },
-    { Type: 'Viande hachée', value: 920 },
-    { Type: 'Thon', value: 920 },
-    { Type: 'Jambon', value: 920 },
-    { Type: 'Mixte', value: 920 },
-    { Type: 'fruit de mer', value: 560 }
-  ];
-
-  const typeColors = {
-    Poulet: '#4f46e5',
-    Nuggets: '#eab308',
-    "Viande hachée": '#0d9488',
-    Thon: '#6a1627',
-    Jambon: '#d81891',
-    Mixte: '#0dac35',
-    "fruit de mer": '#2d83ff'
-  };
-
-  // Prepare data for ApexCharts
-  const series = Types.map((item) => item.value);
-
-  // ✅ Use useMemo for dynamic options
+  const { data = [], isLoading, error} = useQuery({
+    queryKey: ['sales_by_type', timeFilter],
+    queryFn: () => fetching_sales_by_type(timeFilter),
+    keepPreviousData: true,
+  });
+  
+  const series = data?.map(item => Number(item.total_sales)) || [];
+  const labels = data.map((item) =>
+    t(`types.${item.type?.name}`, { defaultValue: item.type?.name })
+  );
   const options = useMemo(() => ({
     chart: {
       type: 'donut',
-      foreColor: '#5d5d5d'
+      foreColor: '#5d5d5d',
     },
-    labels: Types.map((item) => t(`types.${item.Type}`, { defaultValue: item.Type })),
-    colors: Types.map((item) => typeColors[item.Type]),
+    labels,
+    colors: defaultChartColors.slice(0, labels.length), 
     responsive: [
       {
         breakpoint: 480,
         options: {
-          chart: {
-            width: 300,
-          },
-          legend: {
-            position: 'bottom',
-          },
+          chart: { width: 300 },
+          legend: { position: 'bottom' },
         },
       },
     ],
@@ -76,44 +61,50 @@ const ApexDonutChartbyCatigory = () => {
               color: 'var(--text-color)',
               fontSize: '16px',
               fontWeight: 600,
-              formatter: (w) => {
-                const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                return total.toLocaleString();
-              },
+              formatter: (w) =>
+                w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString(),
             },
             value: {
               show: true,
               color: 'var(--text-color)',
               fontSize: '14px',
               fontWeight: 500,
-              formatter: (value) => {
-                return value.toLocaleString();
-              },
+              formatter: (value) => value.toLocaleString(),
             },
           },
         },
       },
     },
-  }), [t]); // Recompute when language changes
+  }), [labels, t]);
+
+  const filters = [
+    { label: t('filters.Day'), value: 1 },
+    { label: t('filters.Week'), value: 7 },
+    { label: t('filters.Month'), value: 30 },
+  ];
+
+  if (isLoading) return <div>{t('loading')}</div>;
+  if (error) return <div>{t('error')}</div>;
 
   return (
     <div className={styles.chartContainer}>
       <div className={styles.titleAndFilter}>
         <h2 className={styles.chartTitle}>{t('filters.Sales by Types')}</h2>
         <div className={styles.filterButtons}>
-          <button className={styles.filterButton}>{t('filters.Day')}</button>
-          <button className={styles.filterButton}>{t('filters.Week')}</button>
-          <button className={styles.filterButton}>{t('filters.Month')}</button>
+          {filters.map(({ label, value }) => (
+            <button
+              key={value}
+              className={`${styles.filterButton} ${timeFilter === value ? styles.active : ''}`}
+              onClick={() => setTimeFilter(value)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
+
       <div id="chart">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="donut"
-          height={350}
-          key={t('languageKey')} // Optional: Force re-render
-        />
+        <ReactApexChart options={options} series={series} type="donut" height={350} />
       </div>
     </div>
   );

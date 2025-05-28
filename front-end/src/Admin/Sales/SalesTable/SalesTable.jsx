@@ -1,88 +1,80 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './SalesTable.module.css';
-import {useQuery} from '@tanstack/react-query'
-import { fetchingSales } from '../../../Api/fetchingData/FetchAllSales';
+import { useQuery } from '@tanstack/react-query';
+import { fetching_filtred_sales } from '../../../Api/fetchingData/FetchFilteredSales'; 
+import { fetching_sales_statistic } from '../../../Api/fetchingData/FetchSalesStatistic';
 import {
   TrendingUp,
   Calendar,
-  // ArrowUpRight,
-  // ArrowDownRight,
   Package,
-  Search
+  Search,
+  ArrowUpRight
 } from 'lucide-react';
 
-
 const SalesTable = () => {
-  const { data: sales, isLoading } = useQuery({
-    queryKey: ['sales'],
-    queryFn: fetchingSales,
-  });
-  console.log('sales',sales);
-  
   const { t } = useTranslation();
+
   const [timeFilter, setTimeFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
+  const { data: sales_statistic, isLoading: isLoadingSales } = useQuery({
+    queryKey: ['sales_statistic'],
+    queryFn: fetching_sales_statistic,
+  });
 
-
-  if(isLoading){
+  const { data: filtred_sales, isLoading: isLoadingStatistic } = useQuery({
+    queryKey: ['sales', timeFilter],
+    queryFn: () => fetching_filtred_sales(timeFilter),
+    keepPreviousData: true, // لتحسين تجربة المستخدم عند تبديل الفلتر
+  });
+  
+  
+ 
+  if (isLoadingSales || isLoadingStatistic) {
     return <div className={styles.loading}>{t('loading')}</div>;
   }
 
   return (
     <div className={styles.salesDashboard}>
       <div className={styles.analyticsGrid}>
-        {/* Total Revenue Card */}
         <div className={styles.analyticsCard}>
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.total_revenue')}</p>
-              <p className={styles.cardValue}>__</p>
+              <p className={styles.cardValue}>{sales_statistic?.total_sales}</p>
             </div>
-            {/* <div className={`${styles.trend} ${
-              previousPeriodComparison.revenue >= 0 ? styles.positive : styles.negative
-            }`}>
-              {previousPeriodComparison.revenue >= 0 ? (
-                <ArrowUpRight color='var(--success-color)' />
-              ) : (
-                <ArrowDownRight color='var(--danger-color)' />
-              )}
-              {Math.abs(previousPeriodComparison.revenue)}%
-            </div> */}
+            <ArrowUpRight color="var(--success-color)" />
           </div>
         </div>
-      
-        {/* Daily Sales Card */}
+
         <div className={styles.analyticsCard}>
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.daily_sales')}</p>
-              <p className={styles.cardValue}>__</p>
+              <p className={styles.cardValue}>{sales_statistic?.sales_last_24_hours}</p>
             </div>
-            <Calendar color='var(--primary)'/>
+            <Calendar color="var(--primary)" />
           </div>
         </div>
 
-        {/* Weekly Sales Card */}
         <div className={styles.analyticsCard}>
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.weekly_sales')}</p>
-              <p className={styles.cardValue}>__</p>
+              <p className={styles.cardValue}>{sales_statistic?.sales_last_7_days}</p>
             </div>
-            <TrendingUp color='var(--success-color)'/>
+            <TrendingUp color="var(--success-color)" />
           </div>
         </div>
 
-        {/* Monthly Sales Card */}
         <div className={styles.analyticsCard}>
           <div className={styles.cardHeader}>
             <div>
               <p className={styles.cardLabel}>{t('filters.monthly_sales')}</p>
-              <p className={styles.cardValue}>__</p>
+              <p className={styles.cardValue}>{sales_statistic?.sales_last_30_days}</p>
             </div>
-            <Package color='var(--icon-color)'/>
+            <Package color="var(--icon-color)" />
           </div>
         </div>
       </div>
@@ -99,6 +91,7 @@ const SalesTable = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
+
         <div className={styles.dateFilter}>
           <Calendar className={styles.calendarIcon} />
           <select
@@ -129,38 +122,33 @@ const SalesTable = () => {
             </tr>
           </thead>
           <tbody>
-            {sales?.map((sale) =>
-              (
-                <tr key={`${sale.id}`} className={styles.tableRow}>
-                  <td className={styles.tableData}>{sale.sale_number ? sale.sale_number : sale.id }</td>
+            {filtred_sales?.filter((sale) =>
+                (sale.product?.name?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
+                sale.category?.name?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
+                sale.type?.name?.toLowerCase()?.includes(searchTerm.toLowerCase()))
+              )
+              .map((sale) => (
+                <tr key={sale.id} className={styles.tableRow}>
+                  <td className={styles.tableData}>{sale.sale_number ?? sale.id}</td>
+                  <td className={styles.tableData}>{sale.sold_at}</td>
+                  <td className={styles.tableData}>{sale.product.name}</td>
+                  <td className={styles.tableData}>{sale.category.name}</td>
+                  <td className={styles.tableData}>{sale.type.name}</td>
                   <td className={styles.tableData}>
-                    {sale.sold_at}
-                  </td>
-                  <td className={styles.tableData}>{sale.product_name}</td>
-                  <td className={styles.tableData}>{sale.category_name}</td>
-                  <td className={styles.tableData}>{sale.type_name}</td>
-                  <td className={styles.tableData}>
-                    <span className={`${styles.statusBadge} ${
-                      sale.id? styles.completed : styles.refunded
-                    }`}>
-                      {`completed`}
+                    <span
+                      className={`${styles.statusBadge} ${
+                        sale.id ? styles.completed : styles.refunded
+                      }`}
+                    >
+                      completed
                     </span>
                   </td>
-                  <td className={styles.tableData}>
-                    ${(sale.total_price)}
-                  </td>
+                  <td className={styles.tableData}>${sale.total_price}</td>
                 </tr>
-              )
-            )}
+              ))}
           </tbody>
         </table>
       </div>
-
-      {/* {[].length === 0 && (
-        <div className={styles.noResults}>
-          <p>{t('empty_state.no_sales')}</p>
-        </div>
-      )} */}
     </div>
   );
 };

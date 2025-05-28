@@ -1,75 +1,37 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetching_sales_by_category } from '../../../Api/fetchingData/FetchSalesByCategory';
 import ReactApexChart from 'react-apexcharts';
 import styles from '../SalesCharts/SalesChartsbyType.module.css';
 import { useTranslation } from 'react-i18next';
+import { defaultChartColors } from '../../../Utils/chartColors';
 
 const ApexDonutChartbytype = () => {
   const { t } = useTranslation();
+  const [timeFilter, setTimeFilter] = useState(1);
 
-  // Data definitions
-  const Categories = [
-    { category: 'Tacos', value: 5450 },
-    { category: 'Chawarma', value: 1830 },
-    { category: 'Paninis', value: 920 },
-    { category: 'Jus', value: 920 },
-    { category: 'Penzarotti', value: 920 },
-    { category: 'Chikas', value: 920 },
-    { category: 'Pasticcio', value: 920 },
-    { category: 'Salades', value: 920 },
-    { category: 'Pates', value: 560 }
-  ];
+  const { data = [], isLoading, error } = useQuery({
+    queryKey: ['sales_by_category', timeFilter],
+    queryFn: () => fetching_sales_by_category(timeFilter),
+    keepPreviousData: true,
+  });
 
-  const categoryColors = {
-    Tacos: '#4f46e5',    
-    Chawarma: '#eab308',     
-    Paninis: '#7ff69c',      
-    Jus: '#d81891',
-    Penzarotti: '#6a1627',   
-    Chikas: '#0d9488',
-    Pasticcio: '#e84b55',
-    Salades: '#0dac35',
-    Pates: '#2d83ff'
-  };
+  const series = data.map((item) => Number(item.total_sales));
+  const labels = data.map((item) =>
+    t(`categories.${item.category?.name}`, { defaultValue: item.category?.name })
+  );
 
-  // Prepare data for ApexCharts
-  const series = Categories.map((item) => item.value);
-  const labels = Categories.map((item) => t(`categories.${item.category}`, { defaultValue: item.category }));
-  const colors = Categories.map((item) => categoryColors[item.category]);
-
-  // Chart options
   const options = useMemo(() => ({
-    chart: {
-      type: 'donut',
-      foreColor: '#5d5d5d'
-    },
-    labels: labels,
-    colors: colors,
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 300,
-          },
-          legend: {
-            position: 'bottom',
-          },
-        },
-      },
-    ],
+    chart: { type: 'donut', foreColor: '#5d5d5d' },
+    labels,
+    colors: defaultChartColors.slice(0, labels.length), // ✅ استعمال الألوان المشتركة
     legend: {
       position: 'bottom',
       horizontalAlign: 'center',
       fontSize: '14px',
       fontWeight: 600,
-      markers: {
-        width: 12,
-        height: 12,
-        radius: 6,
-      },
-      itemMargin: {
-        vertical: 8,
-      },
+      markers: { width: 12, height: 12, radius: 6 },
+      itemMargin: { vertical: 8 },
     },
     plotOptions: {
       pie: {
@@ -79,48 +41,47 @@ const ApexDonutChartbytype = () => {
             total: {
               show: true,
               label: t('filters.Total Sales'),
-              color: 'var(--text-color)',
-              fontSize: '16px',
-              fontWeight: 600,
-              formatter: (w) => {
-                const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                return total.toLocaleString();
-              },
+              formatter: (w) => w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString(),
             },
             value: {
               show: true,
-              color: 'var(--text-color)',
-              fontSize: '14px',
-              fontWeight: 500,
-              formatter: (value) => {
-                return value.toLocaleString();
-              },
+              formatter: (value) => value.toLocaleString(),
             },
           },
         },
       },
     },
-  }), [t, labels]);
+  }), [labels, t]);
+
+  const filters = [
+    { label: t('filters.Day'), value: 1 },
+    { label: t('filters.Week'), value: 7 },
+    { label: t('filters.Month'), value: 30 },
+  ];
 
   return (
     <div className={styles.chartContainer}>
       <div className={styles.titleAndFilter}>
-      <h2 className={styles.chartTitle}>{t('filters.Sales by Category')}</h2>
+        <h2 className={styles.chartTitle}>{t('filters.Sales by Category')}</h2>
         <div className={styles.filterButtons}>
-          <button className={styles.filterButton}>{t('filters.Day')}</button>
-          <button className={styles.filterButton}>{t('filters.Week')}</button>
-          <button className={styles.filterButton}>{t('filters.Month')}</button>
+          {filters.map(({ label, value }) => (
+            <button
+              key={value}
+              className={`${styles.filterButton} ${timeFilter === value ? styles.active : ''}`}
+              onClick={() => setTimeFilter(value)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
-      <div id="chart">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="donut"
-          height={350}
-          key={t('languageKey')}
-        />
-      </div>
+      {isLoading ? (
+        <p>{t('loading')}</p>
+      ) : error ? (
+        <p>{t('error')}</p>
+      ) : (
+        <ReactApexChart options={options} series={series} type="donut" height={350} />
+      )}
     </div>
   );
 };

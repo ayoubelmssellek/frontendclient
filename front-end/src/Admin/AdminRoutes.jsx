@@ -20,27 +20,30 @@ import  Reviews  from './Reviews/Reviews';
 import TypeCompenet from './Types/TypesCompenet/TypesCompenet';
 // import Login from './Admin/Pages/Login/Login';
 import {Route, Routes } from 'react-router-dom';
+import NotFoundPage from '../Helper/NotFound/NotFound';
 function AdminRoutes() {
   
 
 return (
     <div>
         <Routes>
-          <Route path='/Dashboard/:role' element={<Dashboard/>} />
-          <Route path='/Dashboard/:role/Products' element={<Products/>} />
-          <Route path='/Dashboard/:role/Products/:Code' element={<Products/>} />
-          <Route path='/Dashboard/:role/Employees' element={<Employees/>} />
-          <Route path='/Dashboard/:role/ListeOrders' element={<ListeOrders/>} />
-          <Route path='/Dashboard/:role/ViewOrderDetails/:Code' element={<ViewOrderDetails/>} />
-          <Route path='/Dashboard/:role/Reviews' element={<Reviews/>} />
-          <Route path='/Dashboard/:role/Categories' element={<Categoreis/>} />
-          <Route path='/Dashboard/:role/Types' element={<TypeCompenet/>} />
-          <Route path='/Dashboard/:role/Notification' element={<Notification/>} />
-          <Route path='/Dashboard/:role/ViewCategoryDetails/:nameCategory' element={<ViewCategoryDetails/>} />
-          <Route path='/Dashboard/:role/ListeOffers' element={<ListeOffers/>} />
-          <Route path='/Dashboard/:role/AdminProfile' element={<AdminProfile/>} />
-          <Route path='/Dashboard/:role/SalesCompenent' element={<SalesCompenent/>} />
-          <Route path='/Dashboard/:role/Customers' element={<Customers/>} />
+          <Route path='/:role' element={<Dashboard/>} />
+          <Route path='/:role/Products' element={<Products/>} />
+          <Route path='/:role/Products/:Code' element={<Products/>} />
+          <Route path='/:role/Employees' element={<Employees/>} />
+          <Route path='/:role/ListeOrders' element={<ListeOrders/>} />
+          <Route path='/:role/ViewOrderDetails/:id' element={<ViewOrderDetails/>} />
+          <Route path='/:role/Reviews' element={<Reviews/>} />
+          <Route path='/:role/Categories' element={<Categoreis/>} />
+          <Route path='/:role/Types' element={<TypeCompenet/>} />
+          <Route path='/:role/Notification' element={<Notification/>} />
+          <Route path='/:role/ViewCategoryDetails/:nameCategory' element={<ViewCategoryDetails/>} />
+          <Route path='/:role/ListeOffers' element={<ListeOffers/>} />
+          <Route path='/:role/AdminProfile' element={<AdminProfile/>} />
+          <Route path='/:role/SalesCompenent' element={<SalesCompenent/>} />
+          <Route path='/:role/Customers' element={<Customers/>} />
+          <Route path="/:role/*" element={<NotFoundPage/>} />
+    
         </Routes>
     </div>
   )

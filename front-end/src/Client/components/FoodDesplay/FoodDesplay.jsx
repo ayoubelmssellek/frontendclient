@@ -75,7 +75,7 @@ const FoodDisplay = () => {
     },
   });
 
-  const handleAddItem = (product) => {
+  const handleAddItem = (product) => {    
     dispatch(addTo_Cart(product));
   };
 

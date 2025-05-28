@@ -37,11 +37,11 @@ const Navbar = ({ pagePath }) => {
           ))}
         </select>
 
-        <Link to={`/admin/Dashboard/${role}/AdminProfile`} className="menu-item">
+        <Link to={`/Dashboard/${role}/AdminProfile`} className="menu-item">
           <FaUserCircle size={30} />
         </Link>
         
-        <Link to={`/admin/Dashboard/${role}/Notification`} className="menu-item">
+        <Link to={`/Dashboard/${role}/Notification`} className="menu-item">
           <FaBell size={30} />
         </Link>
       </div>

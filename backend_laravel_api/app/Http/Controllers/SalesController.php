@@ -33,25 +33,47 @@ class SalesController extends Controller
             ->get();
         return response()->json($sales);
     }
-    public function topCategories()
+    
+    public function topCategories(Request $request)
     {
-        $topCategories = Sale::select('category_id', DB::raw('SUM(total_price) as total_sales'))
-            ->groupBy('category_id')
+        $days = $request->query('days', 1); // الديفولت 1 يوم (اليوم)
+        $now = now()->addHours(2); 
+
+        $query = Sale::select('category_id', DB::raw('SUM(total_price) as total_sales'))
+            ->with('category:id,name');
+        
+        if ($days > 0) {
+            $startDate = $now->copy()->subDays($days - 1)->startOfDay();
+            $query->whereBetween('sold_at', [$startDate, $now]);
+        }
+
+        $topCategories = $query->groupBy('category_id')
             ->orderByDesc('total_sales')
-            ->take(10)
-            ->with('category:name,id')
+            ->take(7)
             ->get();
 
         return response()->json($topCategories);
     }
 
-    public function topTypes()
+
+
+
+
+    public function topTypes(Request $request)
     {
-        $topTypes = Sale::select('type_id', DB::raw('SUM(total_price) as total_sales'))
-            ->groupBy('type_id')
+        $days = $request->query('days', 1); 
+        $now = now()->addHours(2);
+        
+        $query = Sale::select('type_id', DB::raw('SUM(total_price) as total_sales'))
+            ->with('type:id,name');
+
+        if ($days > 0) {
+            $startDate = $now->copy()->subDays($days - 1)->startOfDay();
+            $query->whereBetween('sold_at', [$startDate, $now]);
+        }
+        $topTypes = $query->groupBy('type_id')
             ->orderByDesc('total_sales')
-            ->take(10)
-            ->with('type:name,id')
+            ->take(7)
             ->get();
 
         return response()->json($topTypes);
@@ -67,4 +89,60 @@ class SalesController extends Controller
 
         return response()->json($sales);
     }
+
+    public function filter_by_times(Request $request)
+    {
+        $range = $request->input('range', 'all'); 
+
+        if ($range === 'all') {
+            $sales = Sale::with('product:name,id', 'category:name,id', 'type:name,id')->get();
+        } else {
+            switch ($range) {
+                case 'month':
+                    $days = 30;
+                    break;
+                case 'week':
+                    $days = 7;
+                    break;
+                case 'day':
+                    $days = 1;
+                    break;
+                default:
+                    $days = 1;
+                    break;
+            }
+
+            $startDate = Carbon::now('Africa/Casablanca')->subDays($days);
+            $endDate = Carbon::now('Africa/Casablanca');
+
+            $sales = Sale::whereBetween('created_at', [$startDate, $endDate])
+                ->with('product:name,id', 'category:name,id', 'type:name,id')
+                ->get();
+        }
+
+        return response()->json($sales);
+    }
+
+
+
+    public function sales_statistic()
+    {
+        $now = Carbon::now('UTC')->addHours(2); 
+
+        $totalSales = Sale::count();
+
+        $salesLast30Days = Sale::where('sold_at', '>=', $now->copy()->subDays(30))->count();
+
+        $salesLast7Days = Sale::where('sold_at', '>=', $now->copy()->subDays(7))->count();
+
+        $salesLast24Hours = Sale::where('sold_at', '>=', $now->copy()->subHours(24))->count();
+        
+        return response()->json([
+            'total_sales' => $totalSales,
+            'sales_last_30_days' => $salesLast30Days,
+            'sales_last_7_days' => $salesLast7Days,
+            'sales_last_24_hours' => $salesLast24Hours,
+        ]);
+    }
+
 }

@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
-import { EditEmployee } from "../../Redux/Action";
 import styles from './UpdateEmployees.module.css';
 
 const UpdateEmployees = ({ Code, employee, onClose }) => {
@@ -37,7 +36,7 @@ const UpdateEmployees = ({ Code, employee, onClose }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedEmp = { ...employee, ...formData };
-        dispatch(EditEmployee(Code, updatedEmp));
+        // dispatch(EditEmployee(Code, updatedEmp));
         onClose();
     };
 

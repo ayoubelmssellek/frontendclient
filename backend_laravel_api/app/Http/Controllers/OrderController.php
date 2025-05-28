@@ -6,7 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ItemOrder;
-
+use Carbon\Carbon;
 
 
 class OrderController extends Controller
@@ -32,37 +32,91 @@ class OrderController extends Controller
         ], 200);
     }
 
+    public function GetOrderById($id)
+    {
+        $order = Order::with(['items.product'])->findOrFail($id);
 
-    // public function GetOrderById($id){
-    //     $order = DB::table('orders')
-    //         ->join('item_orders', 'orders.id', '=', 'item_orders.order_id')
-    //         ->join('products', 'item_orders.product_id', '=', 'products.id')
-    //         ->select('orders.', 'item_orders.','products.name as product_name')
-    //         ->where('orders.id', $id)
-    //         ->get();
-    //     return response()->json([
-    //         'message' => '✅ تم جلب الطلب بنجاح',
-    //         'order' => $order,
-    //     ], 200);
-    // }
+        $filtered = [
+            'id' => $order->id,
+            'order_number' => $order->order_number,
+            'total_order' => $order->total_order,
+            'name' => $order->name,
+            'phonenumber' => $order->phonenumber,
+            'street' => $order->street,
+            'housenumber' => $order->housenumber,
+            'created_at' => Carbon::parse($order->created_at)->format('Y-m-d H:i'),
+            'items' => $order->items->map(function ($item) {
+                return [
+                    'product_name' => $item->product->name,
+                    'price' => $item->product->price,
+                    'image_path' => $item->product->image_path,
+                    'quantity' => $item->quantity,
+                    'total_price' => $item->total_price,
+                ];
+            }),
+        ];
+
+        return response()->json($filtered, 200);
+    }
+
+
+
 
     public function GetUserOrders(Request $request)
     {
         $user_id = auth('sanctum')->user()->id;
 
-        // جلب الطلبات ديال المستخدم فقط
         $orders = DB::table('orders')
             ->where('user_id', $user_id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // دمج العناصر مع كل طلب
         $ordersWithItems = $orders->map(function ($order) {
             $items = DB::table('item_orders')
                 ->join('products', 'item_orders.product_id', '=', 'products.id')
-                ->select('item_orders.*', 'products.name as product_name', 'products.image_path as product_image')
+                ->join('types', 'products.type_id', '=', 'types.id')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select(
+                    'item_orders.*',
+                    'products.name as product_name',
+                    'products.image_path as product_image',
+                    'products.price',
+                    'products.id as product_id',
+                    'products.category_id',
+                    'products.type_id'
+                )
                 ->where('item_orders.order_id', $order->id)
                 ->get();
+
+            // loop through each item to find the discount
+            foreach ($items as $item) {
+                // check product offer
+                $offer = DB::table('special_offer_product')
+                    ->where('product_id', $item->product_id)
+                    ->join('special_offers', 'special_offer_product.special_offer_id', '=', 'special_offers.id')
+                    ->select('special_offers.discount')
+                    ->first();
+
+                // if no offer on product, check category
+                if (!$offer) {
+                    $offer = DB::table('special_offer_category')
+                        ->where('category_id', $item->category_id)
+                        ->join('special_offers', 'special_offer_category.special_offer_id', '=', 'special_offers.id')
+                        ->select('special_offers.discount')
+                        ->first();
+                }
+
+                // if no offer on category, check type
+                if (!$offer) {
+                    $offer = DB::table('special_offer_type')
+                        ->where('type_id', $item->type_id)
+                        ->join('special_offers', 'special_offer_type.special_offer_id', '=', 'special_offers.id')
+                        ->select('special_offers.discount')
+                        ->first();
+                }
+
+                $item->discount = $offer ? $offer->discount : 0;
+            }
 
             $order->items = $items;
             return $order;
@@ -73,6 +127,10 @@ class OrderController extends Controller
             'orders' => $ordersWithItems,
         ], 200);
     }
+
+
+
+
 
     public function store(Request $request)
     {

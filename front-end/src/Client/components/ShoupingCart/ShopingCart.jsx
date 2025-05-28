@@ -25,7 +25,7 @@ const ShopingCart = () => {
       id: item.id,
       name: item.name || item.product_name,
       quantity: item.quantity, 
-      price: parseFloat((item.discount? (item.price * (1 - item.discount / 100)).toFixed(2): item.price)  || item.total_price) || 0, 
+      price: item.discount? (item.price * (1 - item.discount / 100)).toFixed(2): item.price, 
       image: item.image_path || item.product_image || '', 
     };
   });

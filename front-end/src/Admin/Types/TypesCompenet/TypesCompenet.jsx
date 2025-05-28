@@ -12,10 +12,11 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchingTypes } from "../../../Api/fetchingData/FetchingTypes";
 import { fetchingDeleteType } from "../../../Api/fetchingData/FetchDeleteType";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import WarningAlert from "../../../Helper/AlertsMsg/WarningMsg";
 
 
 const TypeCompenet = () => {
-  const { data: types = [], isLoading, error } = useQuery({
+  const { data: types = [], error } = useQuery({
     queryKey: ["types"],
     queryFn: fetchingTypes,
   });
@@ -84,6 +85,8 @@ const TypeCompenet = () => {
 
         <div className={styles.pages}>
           <div className={styles.typesContent}>
+              <WarningAlert message="If you delete a type, all products belonging to that type will also be removed." />
+            
             <div className={styles.headerSection}>
               <div className={styles.headerLeft}>
                 <div className={styles.typeCounter}>
@@ -99,9 +102,7 @@ const TypeCompenet = () => {
               </button>
             </div>
 
-            {isLoading ? (
-              <div className={styles.loading}>Loading...</div>
-            ) : error ? (
+            {error ? (
               <div className={styles.error}>Error: {error.message}</div>
             ) : (
               <div className={styles.typesGrid}>

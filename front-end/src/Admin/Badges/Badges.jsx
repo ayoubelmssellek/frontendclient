@@ -1,6 +1,5 @@
 import styles from './Badges.module.css';
 import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { FaRegStar, FaBoxOpen, FaUsers, FaChartLine, FaHamburger } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
@@ -20,11 +19,10 @@ const Badge = () => {
 
     const { t } = useTranslation();
     const { role } = useParams();
-    const products = useSelector((state) => state.admin.produits);
 
     return (
         <div className={styles.BadgeContainer}>
-            <Link to={`/admin/Dashboard/${role}/Products`}>
+            <Link to={`/Dashboard/${role}/Products`}>
                 <div className={styles.badgeCard}>
                     <div className={styles.badgeHeader}>
                         <div className={styles.iconWrapper}>
@@ -37,7 +35,7 @@ const Badge = () => {
                             <h3 className={styles.cardTitle}>     
                             {t('badges.products')}
                             </h3>
-                            <p className={styles.cardValue}>{products.length}</p>
+                            <p className={styles.cardValue}>{[].length}</p>
                         </div>
                     </div>
                     <p className={styles.growthText}>
@@ -46,7 +44,7 @@ const Badge = () => {
                 </div>
             </Link>
 
-            <Link to={`/admin/Dashboard/${role}/ListeOrders`}>
+            <Link to={`/Dashboard/${role}/ListeOrders`}>
                 <div className={styles.badgeCard}>
                     <div className={styles.badgeHeader}>
                         <div className={styles.iconWrapper}>
@@ -71,7 +69,7 @@ const Badge = () => {
             {/* Repeat similar structure for other badges */}
             {
                 parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin'  && (
-                                <Link to={`/admin/Dashboard/${role}/Customers`}>
+                                <Link to={`/Dashboard/${role}/Customers`}>
                                     <div className={styles.badgeCard}>
                                         <div className={styles.badgeHeader}>
                                             <div className={`${styles.badgeIcon} ${styles.customers}`}>
@@ -94,7 +92,7 @@ const Badge = () => {
 
          {
             parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin'  && (
-                <Link to={`/admin/Dashboard/${role}/Reviews`}>
+                <Link to={`/Dashboard/${role}/Reviews`}>
                 <div className={styles.badgeCard}>
                     <div className={styles.badgeHeader}>
                         <div className={`${styles.badgeIcon} ${styles.reviews}`}>
@@ -117,7 +115,7 @@ const Badge = () => {
 
         {
             parsedUser?.role_id === 2 && parsedUser?.role_name === 'admin' && (
-                            <Link to={`/admin/Dashboard/${role}/SalesCompenent`}>
+                            <Link to={`/Dashboard/${role}/SalesCompenent`}>
                                 <div className={styles.badgeCard}>
                                     <div className={styles.badgeHeader}>
                                         <div className={`${styles.badgeIcon} ${styles.sales}`}>
