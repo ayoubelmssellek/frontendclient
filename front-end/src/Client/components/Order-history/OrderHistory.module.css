@@ -159,25 +159,41 @@
   align-items: center;
   gap: 12px;
 }
-
-.statusbefore {
-  padding: 6px 12px;
+.pending{
+    padding: 6px 12px;
   border-radius: 20px;
   font-size: 13px;
   color: #fff;
   font-weight: 600;
-  background: linear-gradient(45deg, #f39c12, #e67e22);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #d1d1d1;
+  color: #5d5d5d;
 }
-
-.statusafter {
+.preparation{
+    padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  background-color: #fef3c7;
+  color: #d97706;
+}
+.ready{
+    padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  color:  #2f45ff; 
+  background-color:#b3ccff  ;
+}
+.delivered{
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 13px;
   color: #fff;
   font-weight: 600;
-  background: green;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #9dff80;
+  color: #00d305;
 }
 
 .expandIcon {

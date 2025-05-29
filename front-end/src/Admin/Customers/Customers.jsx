@@ -14,6 +14,7 @@ const Customers = () => {
     queryKey: ['clients'],
     queryFn: fetchingClientsData,
   });
+  
   const { data: subscriptionData,isLoading: isLoadingSubscription } = useQuery({
     queryKey: ['subscriptions'],
     queryFn: fetchingSubscriptionsStatistics,

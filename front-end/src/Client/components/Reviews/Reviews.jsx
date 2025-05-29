@@ -10,7 +10,6 @@ const Reviews = () => {
     queryKey: ['reviews'],
     queryFn: FetchingListReviews,
   });
-  console.log(reviewsData);
   
   const [fullImage, setFullImage] = useState(null);
   const [expandedText, setExpandedText] = useState(null);

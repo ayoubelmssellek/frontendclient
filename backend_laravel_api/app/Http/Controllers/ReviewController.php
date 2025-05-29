@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Review;
+use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
 class ReviewController extends Controller
 {
@@ -16,12 +17,20 @@ class ReviewController extends Controller
             'comment' => 'nullable|string|max:255',
         ]);
 
+
         $review = new Review();
         $review->user_id = auth()->id();
         $review->product_id = $validated['product_id'];
         $review->rating = $validated['rating'];
         $review->comment = $validated['comment'];
         $review->save();
+
+            
+        Notification::create([
+            'type' => 'review',
+            'user_id' => auth('sanctum')->check() ? auth('sanctum')->id() : null,
+            'message' => auth('sanctum')->check() ? auth('sanctum')->user()->name : 'زائر',
+        ]);
 
         return response()->json(['message' => 'Review added successfully'], 201);
     }
@@ -75,4 +84,6 @@ class ReviewController extends Controller
 
         return response()->json($reviews);
     }
+
+
 }

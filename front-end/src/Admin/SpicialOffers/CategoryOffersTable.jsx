@@ -15,7 +15,6 @@ const CategoryOffersTable = () => {
 
 
   const categoryOffers = offers.filter(offer => offer.type === 'category');
-  console.log('categoryOffers', categoryOffers);
   
 
 

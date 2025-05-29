@@ -10,7 +10,6 @@ const ExploreMenu = () => {
     queryKey: ['categories'],
     queryFn: fetchingCategories
   });
-  console.log(menu_list);
   
   const feltredcategoeis=menu_list?.filter(item=>item.name.toLowerCase() !== "extra" && item.name.toLowerCase() !== "jus")
   if (loading) return <Loading/>;

@@ -33,7 +33,6 @@ const ProductTypes = () => {
         queryClient.invalidateQueries(['types']);
       },
       onMutate: async (newStatus) => {
-        console.log("Optimistically updating type status:", newStatus);
         
       await queryClient.cancelQueries(['types']);
       const previousData = queryClient.getQueryData(['types']);

@@ -33,50 +33,41 @@ class SalesController extends Controller
             ->get();
         return response()->json($sales);
     }
-    
+
     public function topCategories(Request $request)
-    {
-        $days = $request->query('days', 1); // الديفولت 1 يوم (اليوم)
-        $now = now()->addHours(2); 
+   {
+    $days = (int) $request->query('days', 1); 
 
-        $query = Sale::select('category_id', DB::raw('SUM(total_price) as total_sales'))
-            ->with('category:id,name');
-        
-        if ($days > 0) {
-            $startDate = $now->copy()->subDays($days - 1)->startOfDay();
-            $query->whereBetween('sold_at', [$startDate, $now]);
-        }
+    $now = Carbon::now('Africa/Casablanca')->endOfDay(); // نهاية اليوم الحالي
+    $startDate = Carbon::now('Africa/Casablanca')->subDays($days - 1)->startOfDay(); // بداية أول يوم
 
-        $topCategories = $query->groupBy('category_id')
-            ->orderByDesc('total_sales')
-            ->take(7)
-            ->get();
+    $query = Sale::select('category_id', DB::raw('SUM(total_price) as total_sales'))
+        ->with('category:id,name')
+        ->whereBetween('sold_at', [$startDate, $now])
+        ->groupBy('category_id')
+        ->orderByDesc('total_sales')
+        ->take(7)
+        ->get();
 
-        return response()->json($topCategories);
-    }
-
-
-
-
+    return response()->json($query);
+   }
 
     public function topTypes(Request $request)
     {
-        $days = $request->query('days', 1); 
-        $now = now()->addHours(2);
-        
-        $query = Sale::select('type_id', DB::raw('SUM(total_price) as total_sales'))
-            ->with('type:id,name');
+        $days = (int) $request->query('days', 1); 
 
-        if ($days > 0) {
-            $startDate = $now->copy()->subDays($days - 1)->startOfDay();
-            $query->whereBetween('sold_at', [$startDate, $now]);
-        }
-        $topTypes = $query->groupBy('type_id')
+        $now = Carbon::now('Africa/Casablanca')->endOfDay(); // ← نهاية اليوم الحالي (23:59:59)
+        $startDate = Carbon::now('Africa/Casablanca')->subDays($days - 1)->startOfDay(); // ← بداية أول يوم
+
+        $query = Sale::select('type_id', DB::raw('SUM(total_price) as total_sales'))
+            ->with('type:id,name')
+            ->whereBetween('sold_at', [$startDate, $now])
+            ->groupBy('type_id')
             ->orderByDesc('total_sales')
             ->take(7)
             ->get();
 
-        return response()->json($topTypes);
+        return response()->json($query);
     }
 
     public function salesByProduct()
@@ -111,7 +102,6 @@ class SalesController extends Controller
                     $days = 1;
                     break;
             }
-
             $startDate = Carbon::now('Africa/Casablanca')->subDays($days);
             $endDate = Carbon::now('Africa/Casablanca');
 

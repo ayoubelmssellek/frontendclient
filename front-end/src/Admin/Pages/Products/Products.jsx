@@ -24,7 +24,6 @@ const Products = () => {
         queryFn: fetchingProducts,
         staleTime: 10000,
     })
-    console.log(products);
 
       const { data: parsedUser } = useQuery({
         queryKey: ['user'],
@@ -65,18 +64,18 @@ const Products = () => {
     }, [theme]);
 
     const types = useMemo(() => 
-        [...new Set(products?.map(product => product.type.name).filter(Boolean))],
+        [...new Set(products?.map(product => product?.type?.name).filter(Boolean))],
         [products]
     );
     const Category = useMemo(() =>
-        [...new Set(products?.map(product => product.category.name).filter(Boolean))],
+        [...new Set(products?.map(product => product?.category?.name).filter(Boolean))],
         [products]
     );
     const FiltringData = useMemo(() => 
         products?.filter((prods) => {
             const matchesName = prods?.name.toLowerCase().includes(searchByName.toLowerCase());
-            const matchesCategory = prods?.category.name?.toLowerCase().includes(searchByCategory.toLowerCase());
-            const matchesType = prods?.type.name?.toLowerCase().includes(searchByType.toLowerCase());
+            const matchesCategory = prods?.category?.name?.toLowerCase().includes(searchByCategory.toLowerCase());
+            const matchesType = prods?.type?.name?.toLowerCase().includes(searchByType.toLowerCase());
             return matchesName && matchesCategory && matchesType;
         }) || [],
         [products, searchByName, searchByCategory, searchByType]
@@ -181,7 +180,6 @@ const Products = () => {
 
     const handleStatusToggle = (id, currentStatus) => {
         const newStatus = currentStatus === 'avalaible' ? 'out of stock' : 'avalaible';
-        console.log('Updating status for ID:', id, 'to', newStatus);
         
         updateStatuMutation.mutate({ id, status:newStatus });
 

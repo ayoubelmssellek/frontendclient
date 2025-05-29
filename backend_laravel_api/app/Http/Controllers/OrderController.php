@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ItemOrder;
+use App\Models\Notification;
 use Carbon\Carbon;
 
 
@@ -170,7 +171,16 @@ class OrderController extends Controller
                 ]);
             }
 
+            Notification::create([
+                'type' => 'order',
+                'user_id' => auth('sanctum')->check() ? auth('sanctum')->id() : null,
+                'message' => auth('sanctum')->check() ? auth('sanctum')->user()->name: 'زائر',
+                'reference_id' => $order->id, 
+            ]);
+
             DB::commit();
+
+
 
             return response()->json([
                 'message' => '✅ تم إنشاء الطلب بنجاح',

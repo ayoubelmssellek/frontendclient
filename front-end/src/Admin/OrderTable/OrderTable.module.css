@@ -62,26 +62,29 @@
   background: var(--hover-bg);
 }
 
-.status {
+/* Status Styles */
+.statusBadge {
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 }
 
-.statusInPrep {
-  background: var( --status-in-prep-bg);
-  color: var(--preparation-color);
+.pending{
+  background-color: #d1d1d1;
+  color: #5d5d5d;
 }
-
-.statusReady {
-  background: #e6f4ff;
-  color: var(--info-color);
+.preparation{
+  background-color: #fef3c7;
+  color: #d97706;
 }
-
-.statusDelivered {
-  background: #f0fdf0;
-  color: var(--success-color);
+.ready{
+  color:  #2f45ff; 
+  background-color:#b3ccff  ;
+}
+.delivered{
+  background-color: #9dff80;
+  color: #00d305;
 }
 
 /* RTL Support */

@@ -34,7 +34,6 @@ const OrderHistory = () => {
   };
 
   const handleReorder = (order) => {
-    console.log('order',order);
     dispatch(setReorder(order));
     navigator("/shoupingCart"); 
   };
@@ -84,7 +83,7 @@ if (isError) {
                     </button>
                   </div>
                   <div className={styles.orderStatus}>
-                    <span className={`${styles.statusbefore}`}>
+                    <span className={`${styles[order.status]}`}>
                       {order.status}
                     </span>
                     <FaChevronDown className={`${styles.expandIcon} ${expandedOrder === order.id ? styles.expanded : ""}`} />

@@ -111,7 +111,13 @@ const FilterByQatigory = () => {
                       ? styles.OutOfStockOverlay
                       : ""
                   } `}
-                >
+>
+                  {/* Add discount badge here */}
+                  {produit.discount !== 0 && (
+                    <div className={styles.DiscountBadge}>
+                      <span>{produit.discount}% تخفيض</span>
+                    </div>
+                  )}
                   <img
                     src={`http://localhost:8000/storage/${produit.image_path}`}
                     alt={produit.name}

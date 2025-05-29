@@ -29,7 +29,6 @@ const FoodDisplay = () => {
     queryKey: ["products"],
     queryFn: fetchingProducts,
   });
-  console.log("food_list", food_list);
   
 
   const filtredlist = food_list?.filter(i => 
@@ -104,7 +103,7 @@ const FoodDisplay = () => {
               }`}
             >
                               {/* Add discount badge here */}
-                {product.discount > 0 && (
+                {product.discount !== 0 && (
                   <div className={styles.DiscountBadge}>
                     <span>{product.discount}% تخفيض</span>
                   </div>

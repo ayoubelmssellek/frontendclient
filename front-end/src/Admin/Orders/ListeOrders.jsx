@@ -1,6 +1,6 @@
 import { useState,useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Truck, Utensils, Table, Eye, ChevronDown } from 'lucide-react';
+import { Truck, Utensils, Table, ChevronDown } from 'lucide-react';
 import Sidebar from '../Sidebar/Sidebar';
 import Navbar from '../Navbar/Navbar';
 import styles from './ListeOrders.module.css';
@@ -30,19 +30,6 @@ const ListeOrders = () => {
   useEffect(() => {
       localStorage.setItem('sidebarState', JSON.stringify(isOpen));
   }, [isOpen]);
-
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case 'in-preparation':
-        return styles.statusInPrep;
-      case 'ready':
-        return styles.statusReady;
-      case 'delivered':
-        return styles.statusDelivered;
-      default:
-        return styles.statusDefault;
-    }
-  };
 
   const mutate = useMutation({
   mutationFn: ({ orderId, newStatus }) => {
@@ -149,10 +136,16 @@ const ListeOrders = () => {
                     {t('filters.all_status')}
                   </button>
                   <button
-                    className={`${styles.filterButton} ${selectedStatus === 'in-preparation' ? styles.active : ''}`}
-                    onClick={() => setSelectedStatus('in-preparation')}
+                    className={`${styles.filterButton} ${selectedStatus === 'pending' ? styles.active : ''}`}
+                    onClick={() => setSelectedStatus('pending')}
                   >
-                    {t('status.in-preparation')}
+                    {t('filters.pending')}
+                  </button>
+                  <button
+                    className={`${styles.filterButton} ${selectedStatus === 'preparation' ? styles.active : ''}`}
+                    onClick={() => setSelectedStatus('preparation')}
+                  >
+                    {t('status.preparation')}
                   </button>
                   <button
                     className={`${styles.filterButton} ${selectedStatus === 'ready' ? styles.active : ''}`}
@@ -219,16 +212,16 @@ const ListeOrders = () => {
                             onChange={(e) => handleStatusChange(order.id, e.target.value)}
                             className={styles.statusSelect}
                           >
-                            <option value="pending" selected={order.status=='pending'}>{t('status.pending')}</option>
-                            <option value="in-preparation" selected={order.status=='in-preparation'}>{t('status.in-preparation')}</option>
-                            <option value="ready" selected={order.status=='ready'}>{t('status.ready')}</option>
-                            <option value="delivered" selected={order.status=='delivered'}>{t('status.delivered')}</option>
+                            <option value="pending">{t('status.pending')}</option>
+                            <option value="preparation">{t('status.preparation')}</option>
+                            <option value="ready">{t('status.ready')}</option>
+                            <option value="delivered">{t('status.delivered')}</option>
                           </select>
                           <ChevronDown className={styles.selectIcon} size={16} />
                         </div>
                       </td>
                       <td>
-                        <span className={`${styles.status} ${getStatusStyle(order.statusOrder)}`}>
+                        <span  className={`${styles.statusBadge} ${styles[order.status]}`}>
                           {t(`status.${order.status}`)}
                         </span>
                       </td>

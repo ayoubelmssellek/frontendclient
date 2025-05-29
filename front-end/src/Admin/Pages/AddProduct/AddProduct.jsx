@@ -19,9 +19,8 @@ const AddProduct = ({ onClose }) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn:fetchingAddProduct,
-      onSuccess: (data) => {
-      queryClient.invalidateQueries(['products']);
-      
+    onSuccess: () => {
+        queryClient.invalidateQueries(['products']);
     },
     onMutate:async (newProduct) => {
       await queryClient.cancelQueries(['products']);

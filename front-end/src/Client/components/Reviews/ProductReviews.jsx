@@ -1,9 +1,10 @@
 // AllReviews.jsx
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { FaStar, FaRegStar, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import styles from './ProductReviews.module.css';
 import { useQuery } from '@tanstack/react-query';
 import { FetchReviewsById } from '../../../Api/fetchingData/FetchReviewsById';
+import PropTypes from 'prop-types';
 
 const ProductReviews = ({ id }) => {
   const { data: reviewsData } = useQuery({
@@ -19,7 +20,9 @@ const ProductReviews = ({ id }) => {
   };
 
   return (
-    <div className={styles.reviewsSection}>
+    <>
+     { acceptedReviews?.length > 0 && (
+            <div  className={styles.reviewsSection}>
       <div className={styles.reviewsContainer}>
         <div className={styles.reviewsHeader}>
           <h1 className={styles.sectionTitle}>آراء الزبناء حول المنتج</h1>
@@ -81,7 +84,12 @@ const ProductReviews = ({ id }) => {
         </div>
       </div>
     </div>
+      )}
+      </>
   );
+};
+ProductReviews.propTypes = {
+  id: PropTypes.number.isRequired,
 };
 
 export default ProductReviews;

@@ -4,21 +4,33 @@ import { FaRegStar, FaBoxOpen, FaUsers, FaChartLine, FaHamburger } from 'react-i
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { fetchingUser } from '../../Api/fetchingData/FetchUserData';
+import{ fetching_badges_statistics} from '../../Api/fetchingData/Fetch_badges_statistics';
 const Badge = () => {
       const token = localStorage.getItem('authToken');
 
-      const { data: parsedUser } = useQuery({
+    const { data: parsedUser } = useQuery({
         queryKey: ["user"],
         queryFn:fetchingUser,
         enabled: !!token,  // هادي كتخلي useQuery يخدم غير إذا كان التوكن موجود (true)
         staleTime: 1000 * 60 * 5,
     });
 
+    const { data: badges_statistics , isLoading , isError } = useQuery({
+        queryKey: ["badges_statistics"],
+        queryFn:fetching_badges_statistics,
+    });
+    
+
+
+
     
     
 
     const { t } = useTranslation();
     const { role } = useParams();
+    
+    if (isLoading) return <div className={styles.loading}>Loading badges...</div>;
+    if (isError) return <div className={styles.error}>Error loading badges statistics</div>;
 
     return (
         <div className={styles.BadgeContainer}>
@@ -29,17 +41,16 @@ const Badge = () => {
                             <div className={`${styles.badgeIcon} ${styles.products}`}>
                                 <FaHamburger color='#fff' size={20} />
                             </div>
-                            <span className={styles.notificationBadge}>4</span>
                         </div>
                         <div className={styles.titleAndNumber}>
                             <h3 className={styles.cardTitle}>     
                             {t('badges.products')}
                             </h3>
-                            <p className={styles.cardValue}>{[].length}</p>
+                            <p className={styles.cardValue}>{badges_statistics.products.count}</p>
                         </div>
                     </div>
                     <p className={styles.growthText}>
-                     {t('badges.lastUpdate')} 2025/02/22
+                     {t('badges.lastUpdate')} {badges_statistics.products.updated_at}
                     </p>
                 </div>
             </Link>
@@ -51,17 +62,16 @@ const Badge = () => {
                             <div className={`${styles.badgeIcon} ${styles.orders}`}>
                                 <FaBoxOpen color='#fff' size={20} />
                             </div>
-                            <span className={styles.notificationBadge}>4</span>
                         </div>
                         <div className={styles.titleAndNumber}>
                             <h3 className={styles.cardTitle}>
                             {t('badges.orders')}
                             </h3>
-                            <p className={styles.cardValue}>21</p>
+                            <p className={styles.cardValue}>{badges_statistics.orders.count}</p>
                         </div>
                     </div>
                     <p className={styles.growthText}>
-                    {t('badges.lastUpdate')} 2025/02/22
+                    {t('badges.lastUpdate')} {badges_statistics.orders.updated_at}
                     </p>
                 </div>
             </Link>
@@ -79,11 +89,11 @@ const Badge = () => {
                                                 <h3 className={styles.cardTitle}>
                                                 {t('badges.customers')}
                                                 </h3>
-                                                <p className={styles.cardValue}>71</p>
+                                                <p className={styles.cardValue}>{badges_statistics.users.count}</p>
                                             </div>
                                         </div>
                                         <p className={styles.growthText}>
-                                        {t('badges.lastUpdate')} 2025/02/22
+                                        {t('badges.lastUpdate')} {badges_statistics.users.updated_at}
                                         </p>
                                     </div>
                                 </Link>
@@ -102,11 +112,11 @@ const Badge = () => {
                             <h3 className={styles.cardTitle}>
                             {t('badges.reviews')}
                             </h3>
-                            <p className={styles.cardValue}>21</p>
+                            <p className={styles.cardValue}>{badges_statistics.reviews.count}</p>
                         </div>
                     </div>
                     <p className={styles.growthText}>
-                    {t('badges.lastUpdate')} 2025/02/22
+                    {t('badges.lastUpdate')} {badges_statistics.reviews.updated_at}
                     </p>
                 </div>
             </Link>
@@ -125,11 +135,11 @@ const Badge = () => {
                                             <h3 className={styles.cardTitle}>
                                             {t('badges.sales')}
                                             </h3>
-                                            <p className={styles.cardValue}>13</p>
+                                            <p className={styles.cardValue}>{badges_statistics.sales.count}</p>
                                         </div>
                                     </div>
                                     <p className={styles.growthText}>
-                                    {t('badges.lastUpdate')} 2025/02/22
+                                    {t('badges.lastUpdate')} {badges_statistics.sales.updated_at}
                                     </p>
                                 </div>
                             </Link>

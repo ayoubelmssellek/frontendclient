@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Categorie;
+use Illuminate\Support\Str;
 use App\Models\Type;
 
 
@@ -48,16 +49,15 @@ class Sale extends Model
     }
 
 
-    protected static function booted()
-    {
-        static::creating(function ($sale) {
-            $year = now()->year;
+protected static function booted()
+{
+    static::creating(function ($sale) {
+        do {
+            $randomCode = 'SAL-' . now()->year . '-' . Str::upper(Str::random(6));
+        } while (Sale::where('sale_number', $randomCode)->exists());
 
-            $count = Sale::whereYear('created_at', $year)->count() + 1;
+        $sale->sale_number = $randomCode;
+    });
+}
 
-            $number = str_pad($count, 3, '0', STR_PAD_LEFT);
-
-            $sale->sale_number = "SAL-$year-$number";
-        });
-    }
 }

@@ -45,7 +45,7 @@ const ShopingCart = () => {
  
  const mutate=useMutation({
     mutationFn:fetchingAddOrder,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(['orders']);
       navigation('/orderSuccess');
       localStorage.removeItem('cartItems');
@@ -120,7 +120,7 @@ const ShopingCart = () => {
                   <h6>{item.name}</h6>
                 </div>
                 <div className="itemprix">
-                  <p><bdi>درهم</bdi> {productTotalPricePerItem[index]} </p>
+                  <p><bdi>درهم</bdi> {productTotalPricePerItem[index].toFixed(2)} </p>
                 </div>
                 <div className="quantity-control">
                   <button  onClick={() => DicreaseProdectQauntity(item.id, item)} >-</button>

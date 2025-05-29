@@ -11,18 +11,6 @@ const OrderTable = () => {
   });
   const { t } = useTranslation();
 
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case 'in-preparation':
-        return styles.statusInPrep;
-      case 'ready':
-        return styles.statusReady;
-      case 'delivered':
-        return styles.statusDelivered;
-      default:
-        return '';
-    }
-  };
   if (isLoading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>Error: {error.message}</div>;
 
@@ -49,12 +37,12 @@ const OrderTable = () => {
                 <td>{order.order_number}</td>
                 <td>{order.name}</td>
                 <td>{order.phonenumber}</td>
-                <td>{order.order_date}</td>
+                <td>{order.created_at}</td>
                 <td>
                   {order.items.length} {t('tables.items')}
                 </td>
                 <td>
-                  <span className={`${styles.status} ${getStatusStyle(order.statusOrder)}`}>
+                  <span  className={`${styles.statusBadge} ${styles[order.status]}`}>
                     {t(`status.${order.status}`)}
                   </span>
                 </td>

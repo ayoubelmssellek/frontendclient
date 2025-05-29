@@ -67,7 +67,7 @@ const ApexDonutChartbyCatigory = () => {
             value: {
               show: true,
               color: 'var(--text-color)',
-              fontSize: '14px',
+              fontSize: '20px',
               fontWeight: 500,
               formatter: (value) => value.toLocaleString(),
             },

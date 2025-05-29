@@ -24,6 +24,9 @@
     height: auto;
     display: block;
   }
+  bdi{
+    margin-inline: 10px;
+  }
   
   .clientapp {
     position: relative;

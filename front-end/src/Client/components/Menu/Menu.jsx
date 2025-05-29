@@ -59,10 +59,10 @@ import Loading from "../../../Helper/Loading/Loading";
     if (!filtredList) return [];
   
     const grouped = filtredList.reduce((acc, item) => {
-      if (!acc[item.category_name]) {
-        acc[item.category_name] = [];
+      if (!acc[item.category.name]) {
+        acc[item.category.name] = [];
       }
-      acc[item.category_name].push(item);
+      acc[item.category.name].push(item);
       return acc;
     }, {});
   

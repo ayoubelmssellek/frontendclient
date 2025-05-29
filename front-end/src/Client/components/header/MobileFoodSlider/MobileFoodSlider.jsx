@@ -34,7 +34,7 @@ const MobileFoodSlider = () => {
    
     const discounted = filteredList.filter(i => i.discount !== 0);
 
-    return discounted.length > 0 ? discounted : filteredList;
+   return (discounted.length > 0 ? discounted : filteredList).slice(0, 8);
   })();
 
   const resetTimeout = () => {

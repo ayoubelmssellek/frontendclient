@@ -21,7 +21,7 @@ const ProductPageDiskTopVersion = () => {
   const {  cartItems, Favorite } = useSelector((state) => state.client);
   
   const product = produits?.find(item => item.id == id);
-   const extraItems=produits?.filter((item)=>item.category.name == 'extra')
+   const extraItems=produits?.filter((item)=>item.category.name.toLowerCase() == 'extra')
   
   const inCart = cartItems.some(item => item.id == id);
   const isFavorite = Favorite.some(item => item.id == id);

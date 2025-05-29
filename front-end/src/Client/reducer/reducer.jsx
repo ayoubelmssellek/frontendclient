@@ -1,10 +1,8 @@
 import { cart_amount } from "../actions/action";
-import { food_list } from "../../Admin/assets/assets";
 import { toast } from "react-toastify";
 import { t } from "i18next";
 
 const initState = {
-    food_list:food_list,
     cartItems:localStorage.getItem('cartItems')?
               JSON.parse(localStorage.getItem('cartItems')):[],
     cartAmount:localStorage.getItem('cartAmount')?
@@ -12,15 +10,6 @@ const initState = {
     product_info:[] , 
     Favorite:localStorage.getItem('FavoriteList')?
               JSON.parse(localStorage.getItem('FavoriteList')):[] ,
-    orders: localStorage.getItem('orders')?
-            JSON.parse(localStorage.getItem('orders')) :[],  
-    reviews: localStorage.getItem('review')?
-            JSON.parse(localStorage.getItem('review')) :[]  ,
-    Users:[
-            { id: 1, username: 'mustapha', Number_Phon: '0640606282', password: '1234', role: 'Directeur' },
-            { id: 2, username: 'Mohssine', Number_Phon: '0644666688', password: '0000', role: 'Manager' },
-            { id: 3, username: 'ayoub', Number_Phon: '0673897450', password: '4444', role: 'client' },
-          ],
     toggelModalOpen:false,
     toggelcheckoutClicked:false,
     showRegister: false
@@ -137,29 +126,7 @@ const initState = {
             };
         }
         
-          case 'addorder':{
-            let updatedorders=[...state.orders,action.order]
-            localStorage.setItem('orders',JSON.stringify(updatedorders))
-             return{
-            ...state,orders:updatedorders,
-             
-           }
-          }
-          case 'addreview':{
-            let updatedreviews=[...state.reviews,action.review]
-            localStorage.setItem('review',JSON.stringify(updatedreviews))
-             return{
-            ...state,reviews:updatedreviews,
-             
-           }
-          }
-          case 'AddUser':{
-            let updatedUsers=[...state.Users,action.user]
-            return{
-            ...state,Users:updatedUsers,
-             
-           }
-          }
+     
           case 'SET_REORDER': {
             const updatedCartItems = [...state.cartItems];
           

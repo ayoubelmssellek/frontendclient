@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import styles from '../ViewMore/ViewMore.module.css';
 
 const ViewMore = ({ product, onClose }) => {
-    console.log('Product data:', product);
     
     if (!product) {
         return (

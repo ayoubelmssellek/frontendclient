@@ -23,7 +23,6 @@ const ViewOrderDetails = () => {
     queryFn: () => fetchOrderById(id),
   })
 
-  console.log('Order Details:', order);
   
 
   const invoiceRef = useRef();
@@ -50,7 +49,7 @@ const ViewOrderDetails = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading order details</div>;
-
+  
   return (
     <div className="content" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
       <Sidebar isOpen={isOpen} onSidebarStateChange={setIsOpen} />
@@ -78,7 +77,7 @@ const ViewOrderDetails = () => {
                   <img src={`http://localhost:8000/storage/${item.image_path}`} alt={item.name} />
                   <div>
                     <h3>{item.name}</h3>
-                    <p>{item.price} {t('dirham')} x{item.quantity}</p>
+                    <p>{item.total_price/item.quantity} {t('dirham')} x{item.quantity}</p>
                   </div>
                 </div>
               ))}
@@ -110,7 +109,7 @@ const ViewOrderDetails = () => {
                   <tr key={i}>
                     <td>{item.product_name}</td>
                     <td>{item.quantity || 1}</td>
-                    <td>{item.price}</td>
+                    <td>{item.total_price/item.quantity}</td>
                     <td>{item.total_price}</td>
                   </tr>
                 ))}

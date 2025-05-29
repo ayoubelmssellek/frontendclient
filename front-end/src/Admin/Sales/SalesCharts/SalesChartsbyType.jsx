@@ -41,10 +41,15 @@ const ApexDonutChartbytype = () => {
             total: {
               show: true,
               label: t('filters.Total Sales'),
+              color: 'var(--text-color)',
+              fontWeight: 600,
               formatter: (w) => w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString(),
             },
             value: {
               show: true,
+              color: 'var(--text-color)',
+              fontSize: '20px',
+              fontWeight: 500,
               formatter: (value) => value.toLocaleString(),
             },
           },

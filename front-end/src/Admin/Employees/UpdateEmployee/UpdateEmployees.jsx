@@ -1,11 +1,10 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import styles from './UpdateEmployees.module.css';
 
 const UpdateEmployees = ({ Code, employee, onClose }) => {
     const Empls = useSelector((state) => state.admin.Employees);
-    const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
         Name_Employee: '',

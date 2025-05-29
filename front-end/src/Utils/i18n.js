@@ -79,9 +79,9 @@ const resources = {
         dark: "Dark mode",
       },
       status: {
-        "in-preparation": "In Preparation",
-        "ready": "Ready",
-        "delivered": "Delivered",
+        "preparation": "preparation",
+        "ready": "ready",
+        "delivered": "delivered",
         "available": "Available",
         "out_of_stock": "Out of Stock",
         "active": "Active",
@@ -265,7 +265,7 @@ const resources = {
         dark: "Sombre mode",
       },
       status: {
-        "in-preparation": "En préparation",
+        "preparation": "En préparation",
         "ready": "Prêt",
         "delivered": "Livré",
         available: "Disponible",
@@ -449,7 +449,7 @@ const resources = {
         dark: "الوضع الداكن",
       },
       status: {
-        "in-preparation": "جاري التحضير",
+        "preparation": "جاري التحضير",
         "ready": "جاهز",
         "delivered": "تم التوصيل",
         available: "متوفر",

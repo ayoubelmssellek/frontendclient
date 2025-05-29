@@ -7,6 +7,9 @@ import Navbar from '../Navbar/Navbar';
 import { fetchingAdminInformations } from '../../Api/fetchingData/FetchAdminInformation';
 import { fetchingUpdateAdminAccount } from '../../Api/fetchingData/FetchUpdateAdminAccount';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import Modal from '../Modal/Modal';
+import AddManager from './AddManager';
+import ListeManagers from './ListeManagers';
 
 export default function AdminProfile() {
   const { t, i18n } = useTranslation();
@@ -16,6 +19,18 @@ export default function AdminProfile() {
     queryKey: ['adminInfo'],
     queryFn: fetchingAdminInformations,
   });
+
+  const [showAddManagerComponent, setShowAddManagerComponent] = useState(false);
+  const [showListeManagerComponent, setShowListeManagerComponent] = useState(false);
+
+
+
+  const handleCloseAddManagerModal = () => setShowAddManagerComponent(false);
+  const handleOpenAddManagerModal = () =>  setShowAddManagerComponent(true)
+
+
+  const handleCloseListeManagerModal = () => setShowListeManagerComponent(false);
+  const handleOpenListeManagerModal = () => setShowListeManagerComponent(true)
 
   // Sidebar open/close state
   const [isOpen, setIsOpen] = useState(() => {
@@ -49,7 +64,7 @@ export default function AdminProfile() {
       });
     }
   }, [data]);
-
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile(prevProfile => ({
@@ -119,15 +134,21 @@ export default function AdminProfile() {
         <div className={styles.pages}>
           <div className={styles.profileCard}>
             <div className={styles.cardHeader}>
-              <h2 className={styles.cardTitle}>
+              <div>
+               <h2 className={styles.cardTitle}>
                 <User className={styles.iconSpacing} />
                 {t('profile.Admin Profile')}
-              </h2>
-              <p className={styles.cardDescription}>
+               </h2>
+               <p className={styles.cardDescription}>
                 {t('profile.Msg')}
-              </p>
+               </p>
+              </div>
+               <div className={`${styles.gestingManager} `}>
+               <button className={`${styles.AddManagerButton}`} onClick={handleOpenAddManagerModal}>Add Manager</button>
+               <button className={`${styles.AddManagerButton}`} onClick={handleOpenListeManagerModal}>Liste  managers</button>
+               </div>
             </div>
-
+           
             <div className={styles.cardContent}>
               <div className={styles.formGrid}>
                 <div className={styles.formRow}>
@@ -196,7 +217,14 @@ export default function AdminProfile() {
               )}
             </div>
           </div>
-        </div>
+          </div>
+                <Modal isOpen={showAddManagerComponent} onClose={handleCloseAddManagerModal}>
+                  <AddManager onClose={handleCloseAddManagerModal} />
+                </Modal>
+
+                <Modal isOpen={showListeManagerComponent} onClose={handleCloseListeManagerModal}>
+                  <ListeManagers onClose={handleCloseListeManagerModal} />
+                </Modal>
       </div>
     </div>
   );

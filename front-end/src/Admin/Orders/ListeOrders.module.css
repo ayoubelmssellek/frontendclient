@@ -193,20 +193,6 @@
   font-weight: 500;
 }
 
-.statusInPreparation {
-  background: #f9fbeb !;
-  color: var(--preparation-color);
-}
-
-.statusReady {
-  background: #e6f4ff !important;
-  color: var(--info-color) !important;
-}
-
-.statusDelivered {
-  background: #f0fdf0 !important;
-  color: var(--success-color) !important;
-}
 
 .selectWrapper {
   position: relative;
@@ -326,26 +312,29 @@ center span {
 }
 
 /* Status Styles */
-.status {
+.statusBadge {
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
 }
 
-.statusInPrep {
+
+.pending{
+  background-color: #d1d1d1;
+  color: #5d5d5d;
+}
+.preparation{
   background-color: #fef3c7;
   color: #d97706;
 }
-
-.statusReady {
-  background-color: #dcfce7;
-  color: #16a34a;
+.ready{
+  color:  #2f45ff; 
+  background-color:#b3ccff  ;
 }
-
-.statusDelivered {
-  background-color: #d9e5ff;
-  color: #235cff;
+.delivered{
+  background-color: #9dff80;
+  color: #00d305;
 }
 
 /* RTL Support */
@@ -372,3 +361,5 @@ center span {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
+

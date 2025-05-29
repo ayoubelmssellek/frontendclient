@@ -14,6 +14,12 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\NotificationController;
+
+use App\Models\Order;
+use Illuminate\Support\Facades\Cache;
+
+
 
 
 
@@ -46,7 +52,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function (){
     Route::get('/by-product', [SalesController::class, 'salesByProduct']);  
     Route::get('/by-filters', [SalesController::class, 'filter_by_times']);
     Route::get('/sales_statistic', [SalesController::class, 'sales_statistic']);
-});
+    });
+    Route::post('/add_manager', [AdminActionsController::class, 'Add_Manager']);
+    Route::get('/managers', [AdminActionsController::class, 'GetAllManagers']);
+    Route::delete('/managers/{id}', [AdminActionsController::class, 'DeleteManager']);
 });
 
 Route::middleware(['auth:sanctum', 'manager'])->group(function (){
@@ -56,6 +65,16 @@ Route::middleware(['auth:sanctum', 'manager'])->group(function (){
     Route::patch('/order/{id}', [OrderController::class, 'UpdateOrderStatus']);
     Route::patch('/product/{id}', [ProductController::class, 'UpdateProductStatus']);
     Route::patch('/UpdateStatusType/{id}', [TypeController::class, 'updateTypeStatus']);
+
+    Route::get('/badges_statistics',[AdminActionsController::class, 'badges_statistics']);
+    Route::get('/notifications',[NotificationController::class, 'index']);
+    Route::get('/new-orders', function () {
+    $lastCheck = Cache::get('last_check_time', now()->subSeconds(10));
+    $newOrderExists = Order::where('created_at', '>=', $lastCheck)->exists();
+    Cache::put('last_check_time', now());
+    return response()->json(['hasNewOrder' => $newOrderExists]);
+});
+
 });
 
 

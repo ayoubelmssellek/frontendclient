@@ -21,6 +21,7 @@ import TypeCompenet from './Types/TypesCompenet/TypesCompenet';
 // import Login from './Admin/Pages/Login/Login';
 import {Route, Routes } from 'react-router-dom';
 import NotFoundPage from '../Helper/NotFound/NotFound';
+import OrderNotifier from './OrderNotifier/OrderNotifier';
 function AdminRoutes() {
   
 
@@ -43,8 +44,10 @@ return (
           <Route path='/:role/SalesCompenent' element={<SalesCompenent/>} />
           <Route path='/:role/Customers' element={<Customers/>} />
           <Route path="/:role/*" element={<NotFoundPage/>} />
-    
         </Routes>
+
+              <OrderNotifier />
+
     </div>
   )
 }

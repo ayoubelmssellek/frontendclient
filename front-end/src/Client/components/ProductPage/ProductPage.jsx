@@ -26,7 +26,7 @@ const ProductPage = () => {
     const dispatch = useDispatch();
     const { cartItems, Favorite, cartAmount } = useSelector((state) => state.client);
 
-    const extraItems = food_list?.filter((item) => item.category.name == 'Jus');
+    const extraItems = food_list?.filter((item) => item.category.name.toLowerCase() == 'extra');
     const product = food_list?.find(item => item.id == id);
     const inCart = cartItems.some(item => item.id == id);
     const isFavorite = Favorite.some(item => item.id == id);
@@ -85,7 +85,7 @@ const ProductPage = () => {
                             {extraItems.map((item) => (
                                 <div key={item.id} className={styles.extraItem}>
                                     <img 
-                                        src={`http://localhost:8000/${item.image_path}`} 
+                                        src={`http://localhost:8000/storage/${item.image_path}`} 
                                         alt={item.name} 
                                         className={styles.extraItemImage} 
                                     />
