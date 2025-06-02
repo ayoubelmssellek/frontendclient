@@ -12,7 +12,7 @@ class CategorieController extends Controller
     public function index()
     {
         // get all categories with products
-        $categories = Categorie::all();
+        $categories = Categorie::withCount('products')->get(); 
         return response()->json($categories);
     }
 
