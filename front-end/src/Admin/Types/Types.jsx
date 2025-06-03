@@ -1,4 +1,3 @@
-import {useDispatch } from "react-redux";
 import styles from "../Types/Types.module.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,14 +16,14 @@ const ProductTypes = () => {
   
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-    const [showAddCategoryComponent, setShowAddCategoryComponent] = useState(false);
+    const [showAddTypeComponent, setShowAddTypeComponent] = useState(false);
   
-    const handleCloseModal = () => setShowAddCategoryComponent(false);
-    const handleOpenModal = () => setShowAddCategoryComponent(true); // ✅ Fix: Open Modal
+    const handleCloseModal = () => setShowAddTypeComponent(false);
+    const handleOpenModal = () => setShowAddTypeComponent(true); // ✅ Fix: Open Modal
 
   // Calculate status counts
-  const availableCount = data?.filter((type) => type.status ==='available').length;
-  const outOfStockCount = data?.filter((type) => type.status !== 'available').length;
+  const availableCount = data?.filter((type) => type.status ==='avalaible').length;
+  const outOfStockCount = data?.filter((type) => type.status !== 'avalaible').length;
   const allTypesCount = data?.length;
     
   const mutation = useMutation({
@@ -50,7 +49,7 @@ const ProductTypes = () => {
 
       
   const handleStatusToggle = (typeId, newState) => {
-    const newStatus = newState === "available" ? "out of stock" : "available";
+    const newStatus = newState === "avalaible" ? "out of stock" : "avalaible";
     console.log("Updating type status:", typeId, newStatus);
     
     mutation.mutate({ typeId, status: newStatus });
@@ -77,7 +76,7 @@ const ProductTypes = () => {
           <div className={`${styles.statBadge} ${styles.availableStat}`}>
             <FaCheckCircle className={styles.statIcon} />
             <div className={styles.statContent}>
-              <span className={styles.statLabel}>{t("status.available")}</span>
+              <span className={styles.statLabel}>{t("status.avalaible")}</span>
               <span className={styles.statNumber}>{availableCount}</span>
             </div>
           </div>
@@ -100,15 +99,16 @@ const ProductTypes = () => {
             <span className={styles.typeName}>{item.name}</span>
             <button
               className={`${styles.statusPill} ${
-                item.status === 'available' ? styles.available : styles.outOfStock
+                item.status === 'avalaible' ? styles.available : styles.outOfStock
               }`}
-              onClick={() => handleStatusToggle(item.id, item.status || "available")}
+              onClick={() => handleStatusToggle(item.id, item.status || "avalaible")}
             >
-              {item.status || "available"}
+              {t(`status.${item.status}`) || "avalaible"}
+
             </button>
           </div>
         ))}
-                <Modal isOpen={showAddCategoryComponent} onClose={handleCloseModal}>
+                <Modal isOpen={showAddTypeComponent} onClose={handleCloseModal}>
                   <AddType onClose={handleCloseModal} />
                 </Modal>
       </div>

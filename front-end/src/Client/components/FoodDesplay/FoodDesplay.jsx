@@ -109,7 +109,7 @@ const FoodDisplay = () => {
                   </div>
                 )}
               <img
-                src={`http://localhost:8000/storage/${product.image_path}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}/${product.image_path}`}
                 alt={product.name}
                 className={styles.ProductImage}
                 loading="lazy"

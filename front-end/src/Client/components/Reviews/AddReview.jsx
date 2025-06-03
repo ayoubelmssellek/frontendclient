@@ -125,7 +125,7 @@ const AddReview = () => {
               {selectedProduct ? (
                 <div className={styles.selectedProduct}>
                   <img 
-                    src={`http://localhost:8000/storage/${selectedProduct.product_image}`} 
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${selectedProduct.product_image}`} 
                     alt={selectedProduct.product_name}
                     className={styles.productThumbnail}
                     loading="lazy"

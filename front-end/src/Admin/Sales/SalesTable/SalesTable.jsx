@@ -31,7 +31,7 @@ const SalesTable = () => {
   
   
  
-  if (isLoadingSales || isLoadingStatistic) {
+  if (isLoadingSales || isLoadingStatistic){
     return <div className={styles.loading}>{t('loading')}</div>;
   }
 
@@ -41,7 +41,7 @@ const SalesTable = () => {
         <div className={styles.analyticsCard}>
           <div className={styles.cardHeader}>
             <div>
-              <p className={styles.cardLabel}>{t('filters.total_revenue')}</p>
+              <p className={styles.cardLabel}>{t('filters.Total Sales')}</p>
               <p className={styles.cardValue}>{sales_statistic?.total_sales}</p>
             </div>
             <ArrowUpRight color="var(--success-color)" />

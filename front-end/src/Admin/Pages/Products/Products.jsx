@@ -24,6 +24,7 @@ const Products = () => {
         queryFn: fetchingProducts,
         staleTime: 10000,
     })
+    
 
       const { data: parsedUser } = useQuery({
         queryKey: ['user'],
@@ -138,6 +139,8 @@ const Products = () => {
             }
         });
     };
+
+
     
     
     
@@ -301,11 +304,15 @@ const Products = () => {
                                                     <td>{item.type.name}</td>
                                                     <td>{item.price}</td>
                                                     <td>
-                                                        <img className={styles.productImage} src={`http://localhost:8000/storage/${item.image_path}`} alt={item.name} />
+                                                        <img
+                                                        className={styles.productImage}
+                                                        src={`${import.meta.env.VITE_API_BASE_URL}/${item.image_path}`}
+                                                        alt={item.name}
+                                                        />
                                                     </td>
                                                     <td>
                                                         <button
-                                                            className={`${styles.statusButton} ${item.status === 'avalaible' ? styles.statusAvailable : styles.statusOutOfStock}`}
+                                                            className={`${styles.statusButton} ${item.status === 'avalaible' ? styles.statusAvalaible : styles.statusOutOfStock}`}
                                                             onClick={() => handleStatusToggle(item.id, item.status)}
                                                         >
                                                             {item.status}

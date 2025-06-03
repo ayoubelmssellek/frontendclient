@@ -15,6 +15,7 @@ const resources = {
       },
       filters:{
         "add_Category": "Add Category",
+        "add_Type": "Add Type",
         "Sales by Types": "Sales by Types",
         "Sales by Category": "Sales by Category", 
         "Total Sales": "Total Sales",
@@ -45,7 +46,7 @@ const resources = {
         "total_reviews": "Total Reviews",
         "accepted_reviews": "Accepted Reviews",
         "rejected_reviews": "Rejected Reviews",
-        "no_reviews": "No Reviews available",
+        "no_reviews": "No Reviews avalaible",
         "delivery": "Delivery",
         "total": "Total",
         "daily": "Daily",
@@ -56,7 +57,13 @@ const resources = {
       }, 
       navbar: {
         welcome: "Welcome!",
+        home:"home",
+         menu:'menu',
+        account:'account',
+        favorites:'favorites',
+        cart:'cart',
         profile: "Profile",
+        contact:'contact',
         notifications: "Notifications",
       },
       badges:{
@@ -72,6 +79,7 @@ const resources = {
         dashboard: "Dashboard",
         employees: "Employees",
         categories: "Categories",
+        types : "types",
         offers: "Offers",
         settings:"Settings",
         logout:"Logout",
@@ -82,8 +90,8 @@ const resources = {
         "preparation": "preparation",
         "ready": "ready",
         "delivered": "delivered",
-        "available": "Available",
-        "out_of_stock": "Out of Stock",
+        "avalaible": "avalaible",
+        "out of stock": "Out of Stock",
         "active": "Active",
         "disabled": "Disabled",
         "accepted": "Accepted",
@@ -136,14 +144,14 @@ const resources = {
       "empty_state": {
         "title": "No Employees Found",
         "message": "Click the + icon to add a new employee",
-        "no_orders": "No orders available",
+        "no_orders": "No orders avalaible",
         "no_sales": "No sales found matching your criteria",
 
       },
       "products": {
         "add_product": "Add Product",
         "delete_confirm": "Are you sure you want to delete this product?",
-        "no_products": "No products available",
+        "no_products": "No products avalaible",
         update_product: "Update Product",
         product_name: "Product Name"
       },
@@ -176,12 +184,17 @@ const resources = {
     "product_name": "Product Name",
     "image": "Image",
     "make_offer": "Make your offer",
-    "no_products": "No products available"
+    "no_products": "No products avalaible"
   },
   errors: {
     fill_all_fields: "Please fill all fields", // English
     invalid_price: "Price must be a valid number",
     positive_price: "Price must be a positive number"
+  },
+  msg:{
+     "If you delete a category, all products belonging to that category will also be removed":"If you delete a category, all products belonging to that category will also be removed",
+     "If you delete a type, all products belonging to that type will also be removed":"If you delete a type, all products belonging to that type will also be removed",
+     Warning:"Warning"
   }
 
       
@@ -201,6 +214,7 @@ const resources = {
       },
       filters:{
         "add_Category": "Ajouter catégorie",
+         "add_Type": "Ajouter Type",
         "Sales by Types": "Ventes par types",
         "Sales by Category": "Ventes par catégorie",
         "Total Sales": "Ventes totales",
@@ -242,6 +256,12 @@ const resources = {
       },
       navbar: {
         welcome: "Bienvenue !",
+        home:"Accueil",
+         menu:'menu',
+        account:'compte',
+        favorites:'favoris',
+        cart:'panier',
+        contact:'contactez vous',
         profile: "Profil",
         notifications: "Notifications",
       },
@@ -258,6 +278,7 @@ const resources = {
         dashboard: "Table de bord",
         employees: "Employés",
         categories: "Catégories",
+        types : "types",
         offers: "Offres",
         settings:"Settings",
         logout:"Logout",
@@ -268,8 +289,8 @@ const resources = {
         "preparation": "En préparation",
         "ready": "Prêt",
         "delivered": "Livré",
-        available: "Disponible",
-        out_of_stock: "En rupture de stock",
+        avalaible: "Disponible",
+        "out of stock": "En rupture de stock",
         "active": "Actif",
        "disabled": "Désactivé",
        "accepted": "Accepté",
@@ -366,6 +387,11 @@ const resources = {
     fill_all_fields: "Veuillez remplir tous les champs",
     invalid_price: "Le prix doit être un nombre valide",
     positive_price: "Le prix doit être un nombre positif"
+  },
+  msg:{
+     "If you delete a category, all products belonging to that category will also be removed":"Si vous supprimez une catégorie, tous les produits appartenant à cette catégorie seront également supprimés",
+     "If you delete a type, all products belonging to that type will also be removed":"Si vous supprimez une type, tous les produits appartenant à cette type seront également supprimés",
+     Warning:"Avertissement"
   }
 
     }
@@ -383,6 +409,7 @@ const resources = {
       },
       filters:{
         "add_Category": "إضافة فئة" ,
+         "add_Type": "إضافة نوع " ,
         "Sales by Types": "المبيعات حسب النوع",
         "Sales by Category": "المبيعات حسب الفئة", 
         "Total Sales": "إجمالي المبيعات",
@@ -426,6 +453,12 @@ const resources = {
       },
       navbar: {
         welcome: "مرحبا!",
+        home:"الرئيسية",
+        menu:'القائمة',
+        account:'الحساب',
+        favorites:'المفضلة',
+        cart:'سلة',
+        contact:'تواصل معنا',
         profile: "الملف الشخصي",
         notifications: "الإشعارات",
       },
@@ -442,6 +475,7 @@ const resources = {
         dashboard: "لوحة التحكم",
         employees: "الموظفين",
         categories: "الفئات",
+        types : "الانواع",
         offers: "العروض الخاصة",
         settings:"الاعدادات",
         logout:"تسجيل الخروج",
@@ -452,8 +486,8 @@ const resources = {
         "preparation": "جاري التحضير",
         "ready": "جاهز",
         "delivered": "تم التوصيل",
-        available: "متوفر",
-        out_of_stock: "غير متوفر",
+         avalaible: "متوفر",
+        "out of stock": "غير متوفر",
         "active": "نشط",
         "disabled": "معطل",
         "accepted": "مقبول",
@@ -552,6 +586,11 @@ const resources = {
     fill_all_fields: "يرجى ملء جميع الحقول",
     invalid_price: "يجب أن يكون السعر رقمًا صالحًا",
     positive_price: "يجب أن يكون السعر رقمًا موجبًا"
+  }, 
+  msg:{
+     "If you delete a category, all products belonging to that category will also be removed":"إذا قمت بحذف نوع, فسيتم أيضًا حذف جميع المنتجات التابعة لذلك النوع ",
+     "If you delete a type, all products belonging to that type will also be removed":"إذا قمت بحذف نوع , فسيتم أيضًا حذف جميع المنتجات التابعة لذلك النوع",
+     Warning:"تحذير"
   }
     }
   }

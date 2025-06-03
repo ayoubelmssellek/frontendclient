@@ -20,7 +20,7 @@ const Reviews = () => {
   const acceptedReviews = reviewsData?.filter(item => item.status === "Accepted");
 
   const handleImageClick = (image) => {
-    setFullImage(`http://localhost:8000/storage/${image}`);
+    setFullImage(`${import.meta.env.VITE_API_BASE_URL}/${image}`);
   };
 
   const toggleText = (reviewId) => {
@@ -81,7 +81,7 @@ const Reviews = () => {
 
                 <div className={styles.cardBody}>
                 <div className={styles.dishImage} onClick={() => handleImageClick(review.product_image)}>
-                  {review.product_image && <img src={`http://localhost:8000/storage/${review.product_image}`} alt={review.product_image} />}
+                  {review.product_image && <img src={`${import.meta.env.VITE_API_BASE_URL}/${review.product_image}`} alt={review.product_image} />}
                   <div className={styles.imageOverlay}>انقر للتكبير</div>
                 </div>
                   <div className={styles.dishInfo}>

@@ -29,7 +29,7 @@ const UpdateCategory = ({ onClose, category }) => {
 
       // ✅ استرجاع الصورة الأصلية من السيرفر
       if (category.image) {
-        setPreviewImage(`http://localhost:8000/storage/${category.image}`);
+        setPreviewImage(`${import.meta.env.VITE_API_BASE_URL}/${category.image}`);
       }
     }
   }, [category]);

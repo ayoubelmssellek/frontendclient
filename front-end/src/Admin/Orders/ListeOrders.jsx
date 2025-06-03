@@ -139,7 +139,7 @@ const ListeOrders = () => {
                     className={`${styles.filterButton} ${selectedStatus === 'pending' ? styles.active : ''}`}
                     onClick={() => setSelectedStatus('pending')}
                   >
-                    {t('filters.pending')}
+                    {t('status.pending')}
                   </button>
                   <button
                     className={`${styles.filterButton} ${selectedStatus === 'preparation' ? styles.active : ''}`}
@@ -153,12 +153,12 @@ const ListeOrders = () => {
                   >
                     {t('status.ready')}
                   </button>
-                  <button
+                  {/* <button
                     className={`${styles.filterButton} ${selectedStatus === 'delivered' ? styles.active : ''}`}
                     onClick={() => setSelectedStatus('delivered')}
                   >
                     {t('status.delivered')}
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className={styles.filterButtons}>
@@ -201,7 +201,7 @@ const ListeOrders = () => {
                 <tbody>
                   {filteredOrders.map((order) => (
                     <tr key={order.id}>
-                      <td>#{order.order_number}</td>
+                      <td>{order.order_number}</td>
                       <td>{order.name}</td>
                       <td>{order.phonenumber}</td>
                       <td>{order.created_at}</td>

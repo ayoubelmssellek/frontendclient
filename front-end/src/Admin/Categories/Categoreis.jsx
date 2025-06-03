@@ -98,7 +98,7 @@ const Categories = () => {
         <div className={styles.pages}>
           <div className={styles.categoriesContent}>
             {/* Header Section */}
-             <WarningAlert message="If you delete a category, all products belonging to that category will also be removed." />
+             <WarningAlert message={t("msg.If you delete a category, all products belonging to that category will also be removed")}/>
             <div className={styles.headerSection}>
               <div className={styles.headerLeft}>
                 <div className={styles.categoryCounter}>
@@ -138,13 +138,13 @@ const Categories = () => {
                 >
                   <div className={styles.cardMedia}>
                     <img
-                      src={`http://localhost:8000/storage/${cat.image}?t=${Date.now()} `}
+                      src= {`${import.meta.env.VITE_API_BASE_URL}/${cat.image}?t=${Date.now()}`} 
                       alt={cat.menu_name}
                       className={styles.categoryImage}
                     />
                     <div className={styles.imageOverlay} />
                     <span className={styles.productCount}>
-                      Nb_P
+                      {cat.products_count}
                     </span>
                   </div>
 
@@ -160,7 +160,7 @@ const Categories = () => {
                              <FaTrash size={20} color="#ef4444"/>
                            </button>
                       </div>
-                      <Link to={`/admin/Dashboard/${role}/ViewCategoryDetails/${cat.menu_name}`} className={styles.viewButton} >
+                      <Link to={`/Dashboard/${role}/ViewCategoryDetails/${cat.name}`} className={styles.viewButton} >
                         <FaEye className={styles.eyeIcon} />
                         <span>{t("actions.view_details")}</span>
                       </Link>

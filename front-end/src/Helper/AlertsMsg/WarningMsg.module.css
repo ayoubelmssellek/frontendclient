@@ -22,3 +22,7 @@
 .warningText {
   display: inline;
 }
+
+[dir="rtl"] .warningAlert{
+  
+}

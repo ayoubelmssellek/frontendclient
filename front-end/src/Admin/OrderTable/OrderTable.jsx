@@ -39,7 +39,7 @@ const OrderTable = () => {
                 <td>{order.phonenumber}</td>
                 <td>{order.created_at}</td>
                 <td>
-                  {order.items.length} {t('tables.items')}
+                  {order.items.length} {order.items.length > 1 ? t('tables.items') : t('tables.item')}
                 </td>
                 <td>
                   <span  className={`${styles.statusBadge} ${styles[order.status]}`}>

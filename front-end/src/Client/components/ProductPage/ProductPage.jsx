@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -11,32 +12,87 @@ import {
     MdFavoriteBorder 
 } from "react-icons/md";
 import styles from './ProductPage.module.css';
-import { addTo_Cart, addTo_Favorite, DicreaseQuantity } from '../../actions/action';
+import { addTo_Cart, DicreaseQuantity } from '../../actions/action';
 import { FaArrowRight } from 'react-icons/fa';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchingProducts } from '../../../Api/fetchingData/FetchProducts';
 import ProductReviews from '../Reviews/ProductReviews';
+import { fetchingToggleFavorite } from "../../../Api/fetchingData/FetchToggleFavorite";
+import { FetchingListFavorites } from "../../../Api/fetchingData/FetchListFavorite";
 
 const ProductPage = () => {
-    const { data: food_list, loading, error } = useQuery({
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const queryClient = useQueryClient();
+    const { cartItems, cartAmount } = useSelector((state) => state.client);
+    
+    // Fetch products
+    const { data: food_list, isLoading, error } = useQuery({
         queryKey: ['products'],
         queryFn: fetchingProducts
     });
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const { cartItems, Favorite, cartAmount } = useSelector((state) => state.client);
+    
+    // Fetch favorite list
+    
+   const { 
+    data: favoriteList = [], 
+    isLoading: favLoading, 
+    error: favError 
+  } = useQuery({
+    queryKey: ["favorites"],
+    queryFn: FetchingListFavorites,
+  });
 
-    const extraItems = food_list?.filter((item) => item.category.name.toLowerCase() == 'extra');
+    
+    
+    // Mutation for toggling favorite status
+     const mutation = useMutation({
+       mutationFn: (productId) => fetchingToggleFavorite(productId),
+       onMutate: async (productId) => {
+         await queryClient.cancelQueries(["favorites"]);
+         const previousFavorites = queryClient.getQueryData(["favorites"]) || [];
+         
+         const isCurrentlyFavorite = previousFavorites.some(
+           (fav) => fav.id === productId
+         );
+         
+         queryClient.setQueryData(["favorites"], (old = []) =>
+           isCurrentlyFavorite
+             ? old.filter((fav) => fav.id !== productId)
+             : [...old, { id: productId }] 
+         );
+         
+         return { previousFavorites };
+       },
+       onError: (err, productId, context) => {
+         queryClient.setQueryData(["favorites"], context.previousFavorites);
+       },
+       onSuccess: () => {
+         queryClient.invalidateQueries(["favorites"]);
+       },
+     });
+   
+    
+    // Find the current product
     const product = food_list?.find(item => item.id == id);
+    const extraItems = food_list?.filter((item) => item.category.name.toLowerCase() === 'extra');
+    
+    // Helper functions
     const inCart = cartItems.some(item => item.id == id);
-    const isFavorite = Favorite.some(item => item.id == id);
+    const isFavorite = favoriteList?.some(item => item.id == id);
     const isextraincart = (id) => cartItems.some(item => item.id == id);
+    
+    // Handle favorite toggle
+    const handleToggleFavorite = (productId) => {
 
-    if (!product) {
-        return <div>Product not found</div>;
-    }
-    if (loading) return <div className={styles.loading}>Loading...</div>;
+        mutation.mutate(productId);
+        
+    };
+
+    if (isLoading || favLoading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>Error: {error.message}</div>;
+    if (favError) return <div className={styles.error}>Error: {favError.message}</div>;
+    if (!product) return <div>Product not found</div>;
 
     return (
         <div className={styles.container}>
@@ -71,7 +127,9 @@ const ProductPage = () => {
                         </div>
                         <button
                             className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteButtonActive : ''}`}
-                            onClick={() => dispatch(addTo_Favorite(product, product.id))}
+                            onClick={(e) => 
+                                {e.stopPropagation();
+                                handleToggleFavorite(product.id)}}
                         >
                             {isFavorite ? <MdFavorite size={28} /> : <MdFavoriteBorder size={28} />}
                         </button>
@@ -82,10 +140,10 @@ const ProductPage = () => {
                     <div className={styles.extraItemsSection}>
                         <h3 className={styles.extraItemsTitle}>إضافات إختيارية</h3>
                         <div className={styles.extraItemsContainer}>
-                            {extraItems.map((item) => (
+                            {extraItems?.map((item) => (
                                 <div key={item.id} className={styles.extraItem}>
                                     <img 
-                                        src={`http://localhost:8000/storage/${item.image_path}`} 
+                                        src={`${import.meta.env.VITE_API_BASE_URL}/${item.image_path}`} 
                                         alt={item.name} 
                                         className={styles.extraItemImage} 
                                     />
@@ -161,4 +219,4 @@ const ProductPage = () => {
     );
 };
 
-export default ProductPage;
+export default ProductPage; 

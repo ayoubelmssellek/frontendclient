@@ -200,9 +200,7 @@
   flex-direction: row-reverse;
 }
 
-[dir="rtl"] .addTypeBtn {
-  flex-direction: row-reverse;
-}
+
 
 [dir="rtl"] .actions {
   flex-direction: row-reverse;

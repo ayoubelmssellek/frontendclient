@@ -1,3 +1,7 @@
+
+
+
+
 .content {
   display: flex;
   min-height: 100vh;
@@ -145,7 +149,7 @@
   transition: all 0.2s;
   border-left: 4px solid #4361ee;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   border: 1px solid #eee;
 }
 
@@ -158,10 +162,41 @@
   border-left-color: #ffc107;
 }
 
+.notificationHeader {
+  margin-bottom: 12px;
+}
+
+.messageTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.orderId {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+  display: block;
+}
+
+.notificationLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.mainContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+
 .notificationContent {
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  flex: 1;
 }
 
 .iconContainer {
@@ -192,13 +227,6 @@
   flex: 1;
 }
 
-.messageTitle {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 6px 0;
-  color: #333;
-}
-
 .messageText {
   font-size: 14px;
   color: #666;
@@ -223,6 +251,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+  margin-top: 5px;
 }
 
 .typeBadge {
@@ -232,6 +261,7 @@
   border-radius: 12px;
   background: #e3eeff;
   color: #2a4dbe;
+  white-space: nowrap;
 }
 
 .notificationItem.review .typeBadge {
@@ -257,4 +287,36 @@
 .closeButton:hover {
   background: #f8f9fa;
   color: #dc3545;
+}
+/* Add to existing CSS */
+.clientInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.clientIcon {
+  font-size: 16px;
+  color: #666;
+}
+
+.clientName {
+  font-weight: 500;
+  color: #444;
+}
+
+.messageText {
+  margin: 0 0 8px 0;
+}
+
+.textContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  padding-top: 5px;
 }

@@ -54,6 +54,7 @@ class Order extends Model
                             'type_id'     => $product->type_id,
                             'quantity'    => $item->quantity,
                             'total_price' => $item->quantity * $product->price,
+                            'user_id'=>$order->user_id,
                             'sale_date' =>  now(),
 
                         ]);

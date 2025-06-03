@@ -27,7 +27,7 @@ const ExploreMenu = () => {
               <div className={styles.itemContainer}>
                 <div className={styles.imageWrapper}>
                   <img 
-                    src={`http://localhost:8000/storage/${item.image}`} 
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${item.image}`} 
                     alt={item.name}
                     className={styles.menuImage}
                   />

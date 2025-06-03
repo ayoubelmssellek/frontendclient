@@ -9,39 +9,40 @@ use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
-  public function GetClientsData(Request $request)
+public function GetClientsData(Request $request)
 {
     $ClinetData = DB::table('users')
         ->where('role_id', 1)
         ->leftJoinSub(
-            DB::table('orders')
-                ->select('user_id', DB::raw('MAX(CONVERT_TZ(created_at, "+00:00", "+01:00")) as last_order_date'))
+            DB::table('sales')
+                ->select('user_id', DB::raw('MAX(CONVERT_TZ(created_at, "+00:00", "+01:00")) as last_sale_date'))
                 ->groupBy('user_id'),
-            'latest_orders',
+            'latest_sales',
             'users.id',
             '=',
-            'latest_orders.user_id'
+            'latest_sales.user_id'
         )
         ->leftJoinSub(
-            DB::table('orders')
-                ->select('user_id', DB::raw('COUNT(*) as total_orders'))
+            DB::table('sales')
+                ->select('user_id', DB::raw('COUNT(*) as total_sales'))
                 ->groupBy('user_id'),
-            'orders_count',
+            'sales_count',
             'users.id',
             '=',
-            'orders_count.user_id'
+            'sales_count.user_id'
         )
         ->select(
             'users.name', 
             'users.phone', 
-            'latest_orders.last_order_date',
-            DB::raw('COALESCE(orders_count.total_orders, 0) as total_orders')
+            'latest_sales.last_sale_date',
+            DB::raw('COALESCE(sales_count.total_sales, 0) as total_sales')
         )
-        ->orderByDesc('latest_orders.last_order_date')
+        ->orderByDesc('latest_sales.last_sale_date')
         ->get();
 
     return response()->json($ClinetData);
 }
+
 
 public function GetSubsciptionStatic(Request $request)
 {

@@ -157,7 +157,7 @@ const Reviews = () => {
                         <td>{item.created_at}</td>
                         <td>
                           <img
-                            src={`http://localhost:8000/storage/${item.product_image}`}
+                            src={`${import.meta.env.VITE_API_BASE_URL}/${item.product_image}`}
                             className={styles.productImage}
                           />
                         </td>

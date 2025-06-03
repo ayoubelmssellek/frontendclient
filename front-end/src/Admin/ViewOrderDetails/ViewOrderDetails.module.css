@@ -168,17 +168,18 @@ p {
 
 /* RTL Support */
 [dir="rtl"] {
-  text-align: right;
+  text-align: left;
 }
 
 [dir="rtl"] .items {
-  direction: rtl;
+  direction: ltr;
 }
 
-[dir="rtl"] .item {
-  flex-direction: row-reverse;
-}
 
 [dir="rtl"] .invoice table {
-  direction: rtl;
+  direction: ltr;
 }
+
+
+
+

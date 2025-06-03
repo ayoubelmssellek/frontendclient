@@ -12,7 +12,7 @@ const UpdateType = ({ onClose, type }) => {
 
   const [formData, setFormData] = useState({
     name: "",
-    status: "available",
+    status: "avalaible",
   });
 
   const [error, setError] = useState("");
@@ -22,7 +22,7 @@ const UpdateType = ({ onClose, type }) => {
     if (type) {
       setFormData({
         name: type.name || "",
-        status: type.status || "available",
+        status: type.status || "avalaible",
         id: type.id, 
       });
     }

@@ -40,12 +40,8 @@ const AddCategory = ({ onClose }) => {
       return { previousCategories, tempId: tempCategory.tempId };
     },
 
-    onSuccess: (newCategoryFromServer, _variables, context) => {
-      queryClient.setQueryData(["categories"], (old = []) => {
-        const filtered = old.filter((cat) => cat.tempId !== context.tempId);
-                
-        return [...filtered, newCategoryFromServer];
-      });
+    onSuccess: () => {
+        queryClient.invalidateQueries(["categories"]);
     },
 
     onError: (_error, _newCategory, context) => {

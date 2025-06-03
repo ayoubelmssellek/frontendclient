@@ -49,7 +49,7 @@ const ClearIcon = ({ onClick }) => (
   const filteredProducts = products?.filter(
     (product) =>
       product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category_name?.toLowerCase().includes(searchTerm.toLowerCase())
+      product.category.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
@@ -145,13 +145,13 @@ const ClearIcon = ({ onClick }) => (
               filteredProducts?.map((product) => (
                 <div className="result-card" key={product.id}>
                   <img
-                    src={`http://localhost:8000/storage/${product.image_path}`}	
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${product.image_path}`}	
                     alt={product.name}
                     className="product-img"
                   />
                   <div className="product-details">
                     <h3 className="product-name">{product.name}</h3>
-                    <span className="product-category">{product.category_name}</span>
+                    <span className="product-category">{product.category.name}</span>
                     <div className="price-cart">
                       <span className="product-price"> 
                       <bdi>درهم</bdi>  {product.price || 'N/A'} 

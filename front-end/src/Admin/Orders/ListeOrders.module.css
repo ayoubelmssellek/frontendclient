@@ -244,9 +244,7 @@ center span {
   flex-direction: row-reverse;
 }
 
-[dir="rtl"] .filterGroup {
-  
-}
+
 
 [dir="rtl"] .ordersTable th,
 [dir="rtl"] .ordersTable td {
@@ -340,10 +338,6 @@ center span {
 /* RTL Support */
 [dir="rtl"] .ordersTable table {
   text-align: right;
-}
-
-[dir="rtl"] .filterButtons {
-  flex-direction: row-reverse;
 }
 
 [dir="rtl"] .statCard > div:first-child {

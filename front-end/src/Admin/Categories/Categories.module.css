@@ -294,6 +294,9 @@
   margin-right: 175px;
   margin-left: 0;
 }
+[dir = 'rtl'] .UpAndDelete{
+ left: -70%;
+}
 
 [dir="rtl"] .categoriesContainerNoPush {
   margin-right: 50px;

@@ -57,6 +57,7 @@ const TypeCompenet = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries(["types"]);
+      
     },
 
     onError: (error) => {
@@ -85,7 +86,7 @@ const TypeCompenet = () => {
 
         <div className={styles.pages}>
           <div className={styles.typesContent}>
-              <WarningAlert message="If you delete a type, all products belonging to that type will also be removed." />
+              <WarningAlert message={t("msg.If you delete a type, all products belonging to that type will also be removed")} />
             
             <div className={styles.headerSection}>
               <div className={styles.headerLeft}>
@@ -98,7 +99,7 @@ const TypeCompenet = () => {
 
               <button className={styles.addTypeBtn} onClick={handleOpenAddModal}>
                 <TiPlus className={styles.plusIcon} />
-                {t("filters.add_Types")}
+                {t("filters.add_Type")}
               </button>
             </div>
 

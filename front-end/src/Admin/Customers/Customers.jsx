@@ -14,6 +14,7 @@ const Customers = () => {
     queryKey: ['clients'],
     queryFn: fetchingClientsData,
   });
+  console.log(data);
   
   const { data: subscriptionData,isLoading: isLoadingSubscription } = useQuery({
     queryKey: ['subscriptions'],
@@ -65,21 +66,21 @@ const Customers = () => {
                 <CalendarDays size={18} /> 
                 {t('filters.daily')}
               </h3>
-              <p>{subscriptionData.daily_subscriptions}</p>
+              <p>{subscriptionData.daily_subscriptions || 0} </p>
             </div>
             <div className={styles.statBadge}>
               <h3>
                 <TrendingUp size={18} />
                 {t('filters.weekly')}
               </h3>
-              <p>{subscriptionData.weekly_subscriptions}</p>
+              <p>{subscriptionData.weekly_subscriptions || 0}</p>
             </div>
             <div className={styles.statBadge}>
               <h3>
                 <BarChart4 size={18} />
                 {t('filters.monthly')}
               </h3>
-              <p>{subscriptionData.monthly_subscriptions}</p>
+              <p>{subscriptionData.monthly_subscriptions || 0}</p>
             </div>
           </div>
 
@@ -114,7 +115,7 @@ const Customers = () => {
                       {item.last_order_date ? item.last_order_date :'__'}
                     </td>
                     <td className={styles.ordersCount}>
-                      {item.total_orders}
+                      {item.total_sales}
                     </td>
                     {/* <td>
                       <span className={`${styles.statusBadge} ${

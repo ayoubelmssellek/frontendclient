@@ -11,7 +11,7 @@ const AddType = ({ onClose }) => {
 
   const [formData, setFormData] = useState({
     name: "",
-    status:"available"
+    status:"avalaible"
   });
 
   const [error, setError] = useState("");
@@ -33,12 +33,8 @@ const AddType = ({ onClose }) => {
       return { previousTypes, tempId: tempType.tempId };
     },
 
-    onSuccess: (newTypeFromServer, _variables, context) => {
-      queryClient.setQueryData(["types"], (old = []) => {
-        const filtered = old.filter((type) => type.tempId !== context.tempId);
-                
-        return [...filtered, newTypeFromServer];
-      });
+    onSuccess: () => {
+        queryClient.invalidateQueries(["types"]);
     },
 
     onError: (_error, _newType, context) => {
@@ -65,13 +61,13 @@ const AddType = ({ onClose }) => {
   return (
     <div className={styles.addCategoryModal} dir={isRTL ? "rtl" : "ltr"}>
       <form className={styles.addCategoryForm} onSubmit={handleSubmit}>
-        <p className={styles.formTitle}>{t("categories.add_category")}</p>
+        <p className={styles.formTitle}>{t("types.add_type")}</p>
         {error && <span className={styles.errorMessage}>{error}</span>}
 
         <div className={styles.formGroup}>
           <input
             type="text"
-            placeholder={t("categories.enter_category_name")}
+            placeholder={t("types.enter_type_name")}
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
@@ -79,7 +75,7 @@ const AddType = ({ onClose }) => {
 
         <div className={styles.buttonContainer}>
           <button type="submit" className={styles.submitButton}>
-            {t("categories.add_category")}
+            {t("types.add_type")}
           </button>
           <button type="button" className={styles.cancelButton} onClick={onClose}>
             {t("common.cancel")}

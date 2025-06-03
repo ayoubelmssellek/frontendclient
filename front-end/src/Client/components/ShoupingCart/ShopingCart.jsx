@@ -116,7 +116,7 @@ const ShopingCart = () => {
             {unifiedCartItems.map((item, index) =>
               <div className="cart-item" key={index}>
                 <div className="item-info">
-                  <img src={`http://localhost:8000/storage/${item.image}`} alt={item.image}/>
+                  <img src={`${import.meta.env.VITE_API_BASE_URL}/${item.image}`} alt={item.image}/>
                   <h6>{item.name}</h6>
                 </div>
                 <div className="itemprix">

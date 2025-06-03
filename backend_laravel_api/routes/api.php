@@ -15,6 +15,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Carbon;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Cache;
@@ -68,13 +69,22 @@ Route::middleware(['auth:sanctum', 'manager'])->group(function (){
 
     Route::get('/badges_statistics',[AdminActionsController::class, 'badges_statistics']);
     Route::get('/notifications',[NotificationController::class, 'index']);
-    Route::get('/new-orders', function () {
-    $lastCheck = Cache::get('last_check_time', now()->subSeconds(10));
+  Route::get('/new-orders', function () {
+    if (Cache::get('has_new_order')) {
+        return response()->json(['hasNewOrder' => true]);
+    }
+
+    $lastCheck = Cache::get('last_check_time', Carbon::now('UTC')->subSeconds(10));
     $newOrderExists = Order::where('created_at', '>=', $lastCheck)->exists();
-    Cache::put('last_check_time', now());
+
+    if ($newOrderExists) {
+        Cache::put('has_new_order', true, now()->addSeconds(10));
+    }
+
+    Cache::put('last_check_time', Carbon::now('UTC'));
+
     return response()->json(['hasNewOrder' => $newOrderExists]);
 });
-
 });
 
 

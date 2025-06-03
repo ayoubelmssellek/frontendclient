@@ -119,7 +119,7 @@ const FilterByQatigory = () => {
                     </div>
                   )}
                   <img
-                    src={`http://localhost:8000/storage/${produit.image_path}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${produit.image_path}`}
                     alt={produit.name}
                     className={styles.ProductImage}
                     loading="lazy"

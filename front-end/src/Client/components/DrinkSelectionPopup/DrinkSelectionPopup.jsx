@@ -39,7 +39,7 @@ const DrinkPopup = () => {
               {ExtraFood?.map((item) => (
                 <div key={item.id} className={styles.drinkItem}>
                   <img 
-                    src={`http://localhost:8000/storage/${item.image_path}`} 
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${item.image_path}`} 
                     className={styles.drinkImage} 
                     alt={item.name} 
                   />

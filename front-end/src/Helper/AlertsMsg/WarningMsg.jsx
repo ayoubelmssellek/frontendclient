@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
 import styles from './WarningMsg.module.css';
 import PropTypes from 'prop-types';
 
 const WarningAlert = ({ message }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar"; // RTL detection
   return (
-    <div className={styles.warningAlert} role="alert">
+    <div className={styles.warningAlert} role="alert"  dir={isRTL ? "rtl" : "ltr"}>
       <svg
         className={styles.warningIcon}
         fill="currentColor"
@@ -17,7 +20,7 @@ const WarningAlert = ({ message }) => {
         />
       </svg>
       <span className={styles.warningText}>
-        <strong>Warning!</strong> {message}
+        <strong>{t("msg.Warning")}!</strong> {message}
       </span>
     </div>
   );

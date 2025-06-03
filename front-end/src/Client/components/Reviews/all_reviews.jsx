@@ -20,7 +20,7 @@ const AllReviews = () => {
   const acceptedReviews = reviewsData?.filter(item => item.status === "Accepted");
 
   const handleImageClick = (image) => {
-    setFullImage(`http://localhost:8000/storage/${image}`);
+    setFullImage(`${import.meta.env.VITE_API_BASE_URL}/${image}`);
   };
 
   const toggleText = (reviewId) => {
