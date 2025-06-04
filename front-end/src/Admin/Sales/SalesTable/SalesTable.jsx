@@ -143,7 +143,7 @@ const SalesTable = () => {
                       completed
                     </span>
                   </td>
-                  <td className={styles.tableData}>${sale.total_price}</td>
+                  <td className={styles.tableData}>{sale.total_price} Dh</td>
                 </tr>
               ))}
           </tbody>

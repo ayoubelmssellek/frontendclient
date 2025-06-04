@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { FaArrowLeft, FaStar, FaChevronDown } from 'react-icons/fa';
 import { fetchUserOrders } from '../../../Api/fetchingData/FetchUserOrders';
-import styles from './addReview.module.css';
+import styles from './AddReview.module.css';
 import { fetchingAddReview } from '../../../Api/fetchingData/FetchAddreview';
 import { useMutation ,useQueryClient } from '@tanstack/react-query';
 const AddReview = () => {
