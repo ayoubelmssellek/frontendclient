@@ -63,7 +63,7 @@ const Navbar = () => {
           <ul className={styles.navLinks}>
             <li>
               <Link to="/" className={`${styles.navLink} ${location.pathname === '/' ? styles.active : ''}`}>
-                {t("navbar.home")}
+                ayoub
               </Link>
             </li>
             <li>
